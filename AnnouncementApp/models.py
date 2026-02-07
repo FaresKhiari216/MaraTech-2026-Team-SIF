@@ -17,6 +17,7 @@ class Announcement(models.Model):
         default="handicap"
     )
     title = models.CharField(max_length=100, blank=False, null=False)
+    target_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False, help_text="Montant plafond à atteindre")
     views = models.PositiveIntegerField(default=0)
     photo = models.ImageField(upload_to="Announcements/", blank=True, null=True)
     description = models.TextField(blank=False, null=False)

@@ -24,12 +24,9 @@ class EventForm(forms.ModelForm):
         }
 
 class EventSearchForm(forms.Form):
-    query = forms.CharField(
-        label="Rechercher un évènement",
-        max_length=60,
+    keywords = forms.CharField(
+        label="Mots-clés",
+        max_length=100,
         required=False,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Nom de l’évènement...'
-        })
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Titre ou description...'})
     )

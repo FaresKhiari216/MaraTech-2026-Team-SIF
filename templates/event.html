@@ -13,7 +13,7 @@
             <div class="container py-5">
                 <h1 class="display-3 mb-5 wow fadeIn" data-wow-delay="0.1s">Evenements <span class="text-primary">A Venir</span></h1>
 
-                {% if request.user.is_authenticated and request.user.type == 'association' %}
+                {% if is_association %}
                 <div class="text-center mb-4">
                     <a href="{% url 'events:create_event' %}" class="btn btn-primary rounded-pill px-4 py-2">
                         <i class="fa fa-plus me-2"></i>Créer un événement
@@ -21,70 +21,98 @@
                 </div>
                 {% endif %}
 
-                 <!-- Search bar -->
-                <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.1s">
-                    <div class="col-3 col-lg-2 pe-0">
-                        <div class="text-center border-bottom border-dark py-3 px-2">
-                            <h6>01 Jan 2045</h6>
-                            <p class="mb-0">Fri 06:55</p>
-                        </div>
-                    </div>
-                    <div class="col-9 col-lg-6 border-start border-dark pb-5">
-                        <div class="ms-3">
-                            <h4 class="mb-3">test</h4>
-                            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in </p>
-                            <a href="#" class="btn btn-primary px-3">Join Now</a>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-4">
-                        <div class="overflow-hidden mb-5">
-                            <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="">
-                        </div>
+                <!-- Search + filters using EventSearchForm -->
+                <div class="row justify-content-center mb-4">
+                    <div class="col-lg-8 col-md-10">
+                        <form method="get" action="{% url 'events:search' %}" class="row g-2 align-items-center">
+                            <div class="col-md-5">
+                                {{ form.keywords }}
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-primary rounded-pill px-4" type="submit">
+                                    <i style="font-size:16px" class="fa fa-search me-2"></i>Filtrer
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.3s">
-                    <div class="col-3 col-lg-2 pe-0">
-                        <div class="text-center border-bottom border-dark py-3 px-2">
-                            <h6>01 Jan 2045</h6>
-                            <p class="mb-0">Wed 11:30</p>
+                {% if search_events %}
+                    {% for event in search_events %}
+                        <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.{{ forloop.counter }}s">
+                            <div class="col-3 col-lg-2 pe-0">
+                                <div class="text-center border-bottom border-dark py-3 px-2">
+                                    <h6>Début : {{ event.start_at|date:"d M Y" }}</h6>
+                                    <p class="mb-0">Fin : {{ event.finish_at|date:"d M Y" }}</p>
+                                </div>
+                            </div>
+                            <div class="col-9 col-lg-6 border-start border-dark pb-5">
+                                <div class="ms-3">
+                                    <h4 class="mb-2">{{ event.title }}</h4>
+                                    <p class="mb-3">{{ event.description }}</p>
+                                    <div class="mb-2">
+                                        <span class="badge bg-primary text-white px-3 py-2 me-2" style="font-size: 0.95rem;">
+                                            <i class="fa fa-users me-1"></i>
+                                            Participants prévus : {{ event.n_participants }}
+                                        </span>
+                                        <span class="badge bg-light text-dark px-3 py-2" style="font-size: 0.9rem;">
+                                            Statut : {{ event.get_status_display }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4">
+                                <div class="overflow-hidden mb-5">
+                                    {% if event.image %}
+                                        <img src="{{ event.image.url }}" class="img-fluid w-100" alt="{{ event.title }}">
+                                    {% else %}
+                                        <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ event.title }}">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>  
+                    {% empty %}
+                        <div class="col-12 text-center">
+                            <p class="text-muted mb-0">Aucune annonce pour le moment.</p>
+                        </div>                  
+                    {% endfor %}
+                {% else %}
+                    {% for event in events %}
+                    <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.{{ forloop.counter }}s">
+                        <div class="col-3 col-lg-2 pe-0">
+                            <div class="text-center border-bottom border-dark py-3 px-2">
+                                <h6>Début : {{ event.start_at|date:"d M Y" }}</h6>
+                                <p class="mb-0">Fin : {{ event.finish_at|date:"d M Y" }}</p>
+                            </div>
+                        </div>
+                        <div class="col-9 col-lg-6 border-start border-dark pb-5">
+                            <div class="ms-3">
+                                <h4 class="mb-2">{{ event.title }}</h4>
+                                <p class="mb-3">{{ event.description }}</p>
+                                <div class="mb-2">
+                                    <span class="badge bg-primary text-white px-3 py-2 me-2" style="font-size: 0.95rem;">
+                                        <i class="fa fa-users me-1"></i>
+                                        Participants prévus : {{ event.n_participants }}
+                                    </span>
+                                    <span class="badge bg-light text-dark px-3 py-2" style="font-size: 0.9rem;">
+                                        Statut : {{ event.get_status_display }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="overflow-hidden mb-5">
+                                {% if event.image %}
+                                    <img src="{{ event.image.url }}" class="img-fluid w-100" alt="{{ event.title }}">
+                                {% else %}
+                                    <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ event.title }}">
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                    <div class="col-9 col-lg-6 border-start border-dark pb-5">
-                        <div class="ms-3">
-                            <h4 class="mb-3">test</h4>
-                            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in </p>
-                            <a href="#" class="btn btn-primary px-3">Join Now</a>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-4">
-                        <div class="overflow-hidden mb-5">
-                            <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.5s">
-                    <div class="col-3 col-lg-2 pe-0">
-                        <div class="text-center border-bottom border-dark py-3 px-2">
-                            <h6>01 Jan 2045</h6>
-                            <p class="mb-0">Thu 11:30</p>
-                        </div>
-                    </div>
-                    <div class="col-9 col-lg-6 border-start border-dark pb-5">
-                        <div class="ms-3">
-                            <h4 class="mb-3">test</h4>
-                            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-                                aliquip ex ea commodo consequat. Duis aute irure dolor in </p>
-                            <a href="#" class="btn btn-primary px-3">Join Now</a>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-4">
-                        <div class="overflow-hidden mb-5">
-                            <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="">
-                        </div>
-                    </div>
-                </div>
+                    {% empty %}
+                    <p class="text-muted">Aucun évènement pour le moment.</p>
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
         <!-- Events End -->
