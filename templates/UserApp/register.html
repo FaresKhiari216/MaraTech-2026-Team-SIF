@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Seenedni - Inscription</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+
+
+	<style>
+		body.register-page {
+			min-height: 100vh;
+			background: linear-gradient(135deg, #ffc107 0%, #ffe8a3 40%, #ffffff 100%);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 40px 15px;
+		}
+
+		.donation-card {
+			max-width: 950px;
+			width: 100%;
+			background: #ffffff;
+			border-radius: 18px;
+			box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+			overflow: hidden;
+		}
+
+		.donation-card-left {
+			background: #ffc107;
+			color: #111827;
+			padding: 40px 30px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+
+		.donation-card-left h1 {
+			font-size: 2rem;
+			font-weight: 800;
+			margin-bottom: 15px;
+		}
+
+		.donation-card-left p {
+			margin-bottom: 25px;
+		}
+
+		.impact-list li {
+			display: flex;
+			align-items: center;
+			margin-bottom: 12px;
+			font-size: 0.95rem;
+		}
+
+		.impact-list span.icon {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 26px;
+			height: 26px;
+			border-radius: 999px;
+			background: #fff;
+			color: #f59e0b;
+			font-weight: 700;
+			margin-right: 10px;
+		}
+
+		.donation-badge {
+			display: inline-flex;
+			align-items: center;
+			background: rgba(255, 255, 255, 0.9);
+			color: #92400e;
+			border-radius: 999px;
+			padding: 6px 14px;
+			font-size: 0.8rem;
+			font-weight: 600;
+			margin-bottom: 18px;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+		}
+
+		.donation-card-right {
+			padding: 40px 35px;
+		}
+
+		.donation-card-right h2 {
+			font-weight: 700;
+			margin-bottom: 6px;
+		}
+
+		.donation-card-right p.subtitle {
+			font-size: 0.95rem;
+			color: #6b7280;
+			margin-bottom: 20px;
+		}
+
+		.form-label {
+			font-weight: 600;
+			font-size: 0.9rem;
+			color: #374151;
+		}
+
+		.form-control,
+		.form-control:focus {
+			border-radius: 999px;
+			border-color: #fbbf24;
+			box-shadow: none;
+		}
+
+		.btn-donation {
+			border-radius: 999px;
+			padding: 10px 26px;
+			font-weight: 600;
+			background: #f59e0b;
+			border-color: #f59e0b;
+		}
+
+		.btn-donation:hover {
+			background: #d97706;
+			border-color: #d97706;
+		}
+
+		.link-yellow {
+			color: #d97706;
+			font-weight: 600;
+		}
+
+		.link-yellow:hover {
+			color: #b45309;
+			text-decoration: underline;
+		}
+
+		@media (max-width: 767.98px) {
+			.donation-card-left {
+				padding: 26px 22px;
+				text-align: center;
+			}
+
+			.impact-list li {
+				justify-content: center;
+			}
+		}
+
+
+
+	</style>
+</head>
+
+<body class="register-page">
+	<div class="donation-card row g-0">
+		<div class="donation-card-left col-md-5">
+			<div>
+				<h1>Créez votre compte pour aider.</h1>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+				<ul class="impact-list list-unstyled mb-0">
+					<li><span class="icon">1</span>Centralisez vos actions solidaires au même endroit.</li>
+					<li><span class="icon">2</span>Recevez des nouvelles des cas que vous soutenez.</li>
+					<li><span class="icon">3</span>Participez à une chaîne d&apos;entraide citoyenne.</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="donation-card-right col-md-7 bg-white">
+			<h2>Créer un compte</h2>
+			<p class="subtitle">Remplissez les informations ci-dessous pour rejoindre Seenedni.</p>
+
+			<form method="post">
+				{% csrf_token %}
+
+				<div class="mb-3">
+					<label for="id_last_name" class="form-label">Nom</label>
+					<input type="text" class="form-control" id="id_last_name" name="last_name" placeholder="Votre nom" required>
+				</div>
+
+				<div class="mb-3">
+					<label for="id_first_name" class="form-label">Prénom</label>
+					<input type="text" class="form-control" id="id_first_name" name="first_name" placeholder="Votre prénom" required>
+				</div>
+
+				<div class="mb-3">
+					<label for="id_email" class="form-label">Adresse e-mail</label>
+					<input type="email" class="form-control" id="id_email" name="email" placeholder="vous@example.com" required>
+				</div>
+
+				<div class="mb-3">
+					<label for="id_password1" class="form-label">Mot de passe</label>
+					<input type="password" class="form-control" id="id_password1" name="password1" placeholder="Choisissez un mot de passe" required>
+				</div>
+
+				<div class="mb-3">
+					<label for="id_password2" class="form-label">Retapez le mot de passe</label>
+					<input type="password" class="form-control" id="id_password2" name="password2" placeholder="Confirmez votre mot de passe" required>
+				</div>
+
+				<button type="submit" style="color:white"; class="btn btn-donation w-100 mb-3">Créer mon compte </button>
+
+				<p class="mb-0 text-center" style="font-size: 0.9rem;">
+					Vous avez déjà un compte ?
+					<a href="{% url 'login' %}" style="" class="link-yellow">Se connecter</a>
+				</p>
+			</form>
+		</div>
+	</div>
+
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
+

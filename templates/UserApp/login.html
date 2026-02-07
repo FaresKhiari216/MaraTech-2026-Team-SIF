@@ -9,6 +9,8 @@
 	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 	<link href="{% static 'css/style.css' %}" rel="stylesheet">
 
+	
+
 	<style>
 		body.login-page {
 			min-height: 100vh;
@@ -148,15 +150,21 @@
 			}
 		}
 	</style>
+
+	
 </head>
 
 <body class="login-page">
 	<div class="donation-card row g-0">
 		<div class="donation-card-left col-md-5">
 			<div>
-				<div class="donation-badge">Solidarité &amp; entraide</div>
+				
 				<h1>Connectez-vous pour changer une vie.</h1>
-				<p>En vous connectant à Seenedni, vous pouvez suivre vos dons, soutenir des cas sociaux urgents et donner de la visibilité aux associations.</p>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
 				<ul class="impact-list list-unstyled mb-0">
 					<li><span class="icon">1</span>Suivez l&apos;impact réel de vos contributions.</li>
 					<li><span class="icon">2</span>Accédez aux cas sociaux vérifiés en priorité.</li>
@@ -166,19 +174,18 @@
 		</div>
 
 		<div class="donation-card-right col-md-7 bg-white">
-			<h2>Se connecter</h2>
-			<p class="subtitle">Retrouvez votre espace donateur et vos actions solidaires.</p>
+			<h2>Se connecter</h2> <br>
 
 			<form method="post">
 				{% csrf_token %}
 				<div class="mb-3">
 					<label for="id_email" class="form-label">Adresse e-mail</label>
-					<input type="email" class="form-control" id="id_email" name="email" placeholder="vous@example.com" required>
+					<input style ="font-size: 1rem;" type="email" class="form-control" id="id_email" name="email" placeholder="vous@example.com" required>
 				</div>
 
 				<div class="mb-3">
 					<label for="id_password" class="form-label">Mot de passe</label>
-					<input type="password" class="form-control" id="id_password" name="password" placeholder="Votre mot de passe" required>
+					<input style ="font-size: 1rem;" type="password" class="form-control" id="id_password" name="password" placeholder="votre mot de passe ici" required>
 				</div>
 
 				<div class="d-flex justify-content-between align-items-center mb-4">
@@ -191,11 +198,11 @@
 					<a href="#" class="link-yellow">Mot de passe oublié ?</a>
 				</div>
 
-				<button type="submit" class="btn btn-donation w-100 mb-3">Se connecter et aider</button>
+				<button style="color:white"; type="submit" class="btn btn-donation w-100 mb-3">Se connecter et aider</button>
 
 				<p class="mb-0 text-center" style="font-size: 0.9rem;">
 					Nouveau sur Seenedni ?
-					<a href="#" class="link-yellow">Créer un compte solidaire</a>
+					<a href="{% url 'register' %}" class="link-yellow">Créer un compte </a>
 				</p>
 			</form>
 		</div>

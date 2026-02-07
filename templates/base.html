@@ -1,5 +1,7 @@
 {% load static %}
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,15 +42,16 @@
         <div class="container-fluid fixed-top px-0">
             <div class="container-fluid px-0">
                 <nav class="navbar navbar-light navbar-expand-lg py-2 bg-white shadow-sm">
-                    <a href="index.html" class="navbar-brand py-0">
-                        <h2 style ="margin-left: 50px" class="mb-0 fw-bold">Seenedni</h2>
+                    <a href="index.html" class="navbar-brand py-0 d-flex align-items-center">
+                        <img src="{% static 'img/logo.png' %}" alt="Logo" style="height: 48px; width: auto; margin-right: 10px; object-fit: contain;">
+                        <h2 class="mb-0 fw-bold ms-2">Sammani</h2>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
                         <div class="navbar-nav mx-auto gap-4">
-                            <a href="{% url 'home' %}" class="nav-item nav-link {% block home_is_active %} {% endblock home_is_active %}">Home</a>
+                            <a href="{% url 'home' %}" class="nav-item nav-link {% block home_is_active %} {% endblock home_is_active %}">Acceuil</a>
                             <a href="{% url 'event' %}" class="nav-item nav-link {% block event_is_active %} {% endblock event_is_active %}">Evenement</a>
                             <a href="{% url 'announcement' %}" class="nav-item nav-link {% block announcement_is_active %} {% endblock announcement_is_active %}">Cas sociaux</a>
 
@@ -57,22 +60,40 @@
                             </div>
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
-                        <a style="margin-right: 20px" href="" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block">Se connecter</a>
+                        <a style="margin-right: 20px" href="{% url 'login' %}" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block">Se connecter</a>
                     </div>
                 </nav>
             </div>
         </div>
         <!-- Topbar End -->
 
+        {% block content %}  {% endblock content %}
+        
+         <!-- Footer Start -->
+        <div class="container-fluid footer pt-5 wow fadeIn" data-wow-delay="0.1s">
+            
+            <div class="container py-4">
+                <div class="border-top border-secondary pb-4"></div>
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">Seenedni</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
+                        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
+                        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
 
-        {% block content %}
-
-        {% endblock %}
-
-
+        
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-light back-to-top"><i class="fa fa-arrow-up"></i></a>   
+        <a href="#" class="btn btn-primary border-3 border-light back-to-top"><i class="fa fa-arrow-up"></i> </a>   
+        
 
         
         <!-- JavaScript Libraries -->
@@ -88,3 +109,7 @@
     </body>
 
 </html>
+
+
+
+   
