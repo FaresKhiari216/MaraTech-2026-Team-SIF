@@ -12,7 +12,7 @@ def index(request):
     if request.user.is_authenticated:
         is_association = Association.objects.filter(user=request.user).exists()
     context = {
-        "Announcements": announcements,
+        "announcements": announcements,
         "form": form,
         "logged_in_user": request.user,
         "is_association": is_association,

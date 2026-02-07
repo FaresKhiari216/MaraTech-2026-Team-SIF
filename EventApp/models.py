@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from UserApp.models import Association
 
 STATUS_CHOICES = [
@@ -35,3 +36,25 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class EventFollow(models.Model):
+    """Lien entre un utilisateur "normal" (non association) et un évènement suivi."""
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="followed_events",
+    )
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name="followers",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "event")
+
+    def __str__(self):
+        return f"{self.user} suit {self.event}"

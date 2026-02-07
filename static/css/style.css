@@ -104,11 +104,35 @@ h4, h5, h6, .h4, .h5, .h6 {
 }
 
 
+.btn-participer {
+    background-color: #87CEEB;
+    border-color: #87CEEB;
+    color: #003366;
+}
+
+.btn-participer:hover {
+    background-color: #6bb8d9;
+    border-color: #6bb8d9;
+    color: #00264d;
+}
+
+.btn-annuler {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+}
+
+.btn-annuler:hover {
+    background-color: #b02a37;
+    border-color: #b02a37;
+    color: #fff;
+}
+
+
 .btn.btn-primary:hover {
     color: var(--bs-primary) !important;
     background: var(--bs-dark) !important;
     border-color: var(--bs-dark) !important;
-        background-color: yellow; /* Add hover color */
 }
 
 .btn.btn-dark:hover {
