@@ -51,16 +51,15 @@ def details_announcement(request, announcement_id):
     return render(request, "announcement/Details_Announcement.html", {"announcement": announcement_content})
 
 def edit_announcement(request, announcement_id):
-	announcement = Announcement.objects.get(pk = announcement_id)
-	if request.method == 'POST':
-		form = AnnouncementForm(request.POST, instance=announcement, user=request.user)
-
-		if (form.is_valid()):
-			form.save()
-			return redirect('announcements:details_announcement', announcement_id=announcement.id)
-	else:
-		form = AnnouncementForm(instance=announcement, user=request.user)
-	return render(request, "announcement/Edit_Announcement.html", {"announcement_object": announcement, "announcement":form, "announcement_id": announcement})
+    announcement = Announcement.objects.get(pk=announcement_id)
+    if request.method == "POST":
+        form = AnnouncementForm(request.POST, request.FILES, instance=announcement)
+        if form.is_valid():
+            form.save()
+            return redirect("announcements:Details_Announcement", announcement_id=announcement.id)
+    else:
+        form = AnnouncementForm(instance=announcement)
+    return render(request, "announcement/edit_announcement.html", {"form": form, "announcement": announcement})
 
 def delete_announcement(request, announcement_id):
 	announcement = Announcement.objects.get(pk = announcement_id, user=request.user)
