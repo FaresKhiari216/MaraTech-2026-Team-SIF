@@ -19,12 +19,15 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 from UserApp.views import *
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('AnnouncementApp.urls')),
+    path('', views.index, name='index'),
     path('login/', login, name='login'),
     path('register/', register, name='register'),
+    path('announcement/', include('AnnouncementApp.urls')),
+    path('event/', include('EventApp.urls')),
 ]
 
 # Serve static files during development
