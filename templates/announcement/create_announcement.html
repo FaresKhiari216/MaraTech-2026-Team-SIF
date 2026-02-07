@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block announcement_is_active %}active{% endblock announcement_is_active %}
+
+{% block content %}
+<div class="container py-5" style="margin-top: 4rem;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-warning border-0 py-3">
+                    <h3 class="mb-0 text-dark fw-bold text-center">Créer une nouvelle annonce</h3>
+                </div>
+                <div class="card-body p-4 p-md-5 bg-white">
+                    <p class="text-muted mb-4 text-center">
+                        Remplissez les informations ci-dessous pour publier un nouveau cas social sur Seenedni.
+                    </p>
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">Catégorie</label>
+                            {{ form.category }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Titre de l'annonce</label>
+                            {{ form.title }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Photo</label>
+                            {{ form.photo }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            {{ form.description }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Bénéficiaire</label>
+                            {{ form.beneficiary }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Lien de vérification (cha9a9a.tn)</label>
+                            {{ form.link }}
+                        </div>
+
+                        <div class="form-check mb-4">
+                            {{ form.emergency }}
+                            <label class="form-check-label ms-1">
+                                Cas urgent
+                            </label>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary py-2 fw-semibold">
+                                Publier l'annonce
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

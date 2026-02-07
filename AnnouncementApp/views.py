@@ -31,15 +31,15 @@ def new_announcement(request):
             annoucement = form.save(commit=False)
             annoucement.user = request.user
             annoucement.save()
-            return redirect('Announcements:index')
+            return redirect('announcements:index')
     else:
         form = AnnouncementForm()
 
-    return render(request, "Announcement/Add_Announcement.html", {"form": form})
+    return render(request, "announcement/create_announcement.html", {"form": form})
 
 def details_announcement(request, announcement_id):
 	announcement_content = Announcement.objects.get(pk = announcement_id)
-	return render(request, "Announcement/Details_Announcement.html", {"announcement":announcement_content})
+	return render(request, "announcement/Details_Announcement.html", {"announcement":announcement_content})
 
 def edit_announcement(request, announcement_id):
 	announcement = Announcement.objects.get(pk = announcement_id)
@@ -48,13 +48,13 @@ def edit_announcement(request, announcement_id):
 
 		if (form.is_valid()):
 			form.save()
-			return redirect('Announcements:Details_Note', note_id=announcement.id)
+			return redirect('announcements:details_announcement', announcement_id=announcement.id)
 	else:
 		form = AnnouncementForm(instance=announcement, user=request.user)
-	return render(request, "Announcement/Edit_Announcement.html", {"announcement_object": announcement, "announcement":form, "announcement_id": announcement})
+	return render(request, "announcement/Edit_Announcement.html", {"announcement_object": announcement, "announcement":form, "announcement_id": announcement})
 
 def delete_announcement(request, announcement_id):
 	announcement = Announcement.objects.get(pk = announcement_id, user=request.user)
 	announcement.delete()
-	return redirect('Announcements:index')
+	return redirect('announcements:index')
 
