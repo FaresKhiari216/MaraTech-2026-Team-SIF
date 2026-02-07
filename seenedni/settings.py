@@ -124,7 +124,7 @@ AUTH_USER_MODEL = "UserApp.User"
 # Use an absolute path prefix so generated URLs are like "/static/..."
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR.parent / "static",
+    BASE_DIR / "static",
 ]
 
 # Default path for media

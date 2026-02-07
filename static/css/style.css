@@ -77,8 +77,9 @@ h4, h5, h6, .h4, .h5, .h6 {
 }
 
 .btn-md-square {
-    width: 46px;
-    height: 46px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50% !important;
 }
 
 .btn-lg-square {
@@ -91,13 +92,17 @@ h4, h5, h6, .h4, .h5, .h6 {
 .btn-md-square,
 .btn-lg-square {
     padding: 0;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-weight: normal;
         margin-right: 10px; /* Add slight spacing between links */
     }
+
+.btn-md-square i {
+    line-height: 1;
 }
+
 
 .btn.btn-primary:hover {
     color: var(--bs-primary) !important;
@@ -441,7 +446,7 @@ h4, h5, h6, .h4, .h5, .h6 {
 /*** Footer Start ***/
 .footer {
     margin-top: 6rem;
-    background: var(--bs-success);
+    background: var(--bs-dark);
 }
 
 .footer .footer-item p {

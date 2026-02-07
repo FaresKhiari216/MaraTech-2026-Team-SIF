@@ -12,11 +12,35 @@
                     <p class="fs-5 text-uppercase text-primary">Cas sociaux</p>
                     <h1 style ="font-size: 2.75rem;" class="display-3">Trouver quelqu'un dans le besoin</h1>
                 </div>
+                <!-- Search bar -->
+                <div class="row justify-content-center mb-4">
+                    <div class="col-lg-6 col-md-8">
+                        <form method="get" class="d-flex shadow-sm rounded-pill overflow-hidden bg-white">
+                            <input type="text" name="q" class="form-control border-0 ps-4" placeholder="Rechercher un cas social (nom, ville, type d'aide...)" aria-label="Rechercher un cas social">
+                            <button class="btn btn-primary px-4" type="submit" style="border-radius: 0 999px 999px 0;">
+                                <i style="font-size:16px" class="fa fa-search me-2"></i>Rechercher
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Category filter -->
+                <div class="row justify-content-center mb-4">
+                    <div class="col-lg-6 col-md-8 d-flex justify-content-center gap-3 flex-wrap">
+                        <button type="submit" form="filter-form" name="category" value="cat1" class="btn btn-outline-primary rounded-pill px-4 py-2">cat1</button>
+                        <button type="submit" form="filter-form" name="category" value="cat2" class="btn btn-outline-primary rounded-pill px-4 py-2">cat2</button>
+                    </div>
+                </div>
+
+                <!-- Hidden form to handle filters/search together -->
+                <form id="filter-form" method="get" class="d-none">
+                    <input type="hidden" name="q" value="">
+                    <input type="hidden" name="category" value="">
+                </form>
                 <div class="row g-4 justify-content-center">
                     <div class="col-lg-6 col-xl-4">
                         <div class="sermon-item wow fadeIn" data-wow-delay="0.1s">
                             <div class="overflow-hidden p-4 pb-0">
-                                <img src="{% static 'img/sermon-1.jpg' %}" class="img-fluid w-100" alt="">
+                                <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="">
                             </div>
                             <div class="p-4">
                                 <div class="sermon-meta d-flex justify-content-between pb-2">
@@ -31,7 +55,7 @@
                                         <a href="" class=""><i class="fas fa-image text-muted"></i></a>
                                     </div>
                                 </div>
-                                <a href="" class="d-inline-block h4 lh-sm mb-3">How to get closer to Allah</a>
+                                <a href="" class="d-inline-block h4 lh-sm mb-3">test</a>
                                 <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
                                 aliquip ex ea commodo consequat.</p>
                             </div>
@@ -40,7 +64,7 @@
                    <div class="col-lg-6 col-xl-4">
                         <div class="sermon-item wow fadeIn" data-wow-delay="0.3s">
                             <div class="overflow-hidden p-4 pb-0">
-                                <img src="{% static 'img/sermon-2.jpg' %}" class="img-fluid w-100" alt="">
+                                <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="">
                             </div>
                             <div class="p-4">
                                 <div class="sermon-meta d-flex justify-content-between pb-2">
@@ -55,7 +79,7 @@
                                         <a href="" class=""><i class="fas fa-image text-muted"></i></a>
                                     </div>
                                 </div>
-                                <a href="" class="d-inline-block h4 lh-sm mb-3">Importance of Hajj in Islam</a>
+                                <a href="" class="d-inline-block h4 lh-sm mb-3">test</a>
                                 <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
                                 aliquip ex ea commodo consequat.</p>
                             </div>
@@ -64,7 +88,7 @@
                    <div class="col-lg-6 col-xl-4">
                         <div class="sermon-item wow fadeIn" data-wow-delay="0.5s">
                             <div class="overflow-hidden p-4 pb-0">
-                                <img src="{% static 'img/sermon-3.jpg' %}" class="img-fluid w-100" alt="">
+                                <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="">
                             </div>
                             <div class="p-4">
                                 <div class="sermon-meta d-flex justify-content-between pb-2">
@@ -79,7 +103,7 @@
                                         <a href="" class=""><i class="fas fa-image text-muted"></i></a>
                                     </div>
                                 </div>
-                                <a href="" class="d-inline-block h4 lh-sm mb-3">Importance of “Piller” of Islam</a>
+                                <a href="" class="d-inline-block h4 lh-sm mb-3">test</a>
                                 <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
                                 aliquip ex ea commodo consequat.</p>
                             </div>
