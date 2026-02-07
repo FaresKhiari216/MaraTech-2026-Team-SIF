@@ -4,7 +4,7 @@ from .forms import EventForm
 
 def index(request):
 	context = {"events" : Event.objects.all()}
-	return render(request, "Events.html", context)
+	return render(request, "event.html", context)
 
 def search_event(request):
     query = request.GET.get("name_event")
@@ -13,7 +13,7 @@ def search_event(request):
     if query:
         results = Event.objects.filter(title__icontains=query)
 
-    return render(request, "Events/search_results.html", {"results": results, "query": query})
+    return render(request, "event/search_results.html", {"results": results, "query": query})
 
 def new_event(request):
     if request.method == 'POST':
@@ -26,12 +26,12 @@ def new_event(request):
     else:
         form = EventForm()
 
-    return render(request, "Events/Add_Event.html", {"form": form})
+    return render(request, "event/Add_Event.html", {"form": form})
 
 
 def details_event(request, event_id):
 	event_content = Event.objects.get(pk = event_id)
-	return render(request, "Events/Details_Event.html", {"event":event_content})
+	return render(request, "event/Details_Event.html", {"event":event_content})
 
 def edit_event(request, event_id):
 	event = Event.objects.get(pk = event_id)
@@ -43,7 +43,7 @@ def edit_event(request, event_id):
 			return redirect('Events:Details_Event', event_id=event.id)
 	else:
 		form = EventForm(instance=event, user=request.user)
-	return render(request, "Events/Edit_Event.html", {"event_object": event, "event":form, "event_id": event_id})
+	return render(request, "event/Edit_Event.html", {"event_object": event, "event":form, "event_id": event_id})
 
 def delete_event(request, event_id):
 	event = Event.objects.get(pk = event_id, user=request.user)
