@@ -313,6 +313,12 @@ h4, h5, h6, .h4, .h5, .h6 {
 .sermon-item .sermon-meta a i:hover {
     color: var(--bs-primary) !important;
 }
+ 
+.sermon-item p {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
 /*** Sermon End ***/
 
 

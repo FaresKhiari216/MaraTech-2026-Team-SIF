@@ -2,9 +2,13 @@ from django.shortcuts import render, redirect
 from .models import Announcement
 from .forms import AnnouncementForm, AnnouncementSearchForm
 
+
 def index(request):
-	context = {"Announcements" : Announcement.objects.all()}
-	return render(request, "announcement.html", context)
+    announcements = Announcement.objects.all()
+    form = AnnouncementSearchForm()  # formulaire de recherche vide pour le template
+    context = {"Announcements": announcements, "form": form}
+    return render(request, "announcement.html", context)
+
 
 def search_announcements(request):
     form = AnnouncementSearchForm(request.GET or None)
@@ -22,7 +26,12 @@ def search_announcements(request):
         if emergency:
             results = results.filter(emergency=True)
 
-    return render(request, "announcement/search_results.html", {"form": form, "results": results})
+    # On passe aussi "Announcements" pour que le template fonctionne même si aucun résultat
+    return render(
+        request,
+        "announcement.html",
+        {"form": form, "results_search": results, "Announcements": results},
+    )
 
 def new_announcement(request):
     if request.method == 'POST':
