@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD
     'AnnoucementApp',
+=======
+    'UserApp',
+    'AnnouncementApp',
+    'EventApp',
+>>>>>>> 0d3a6f83af63e844cf0483578cefd36c74e90cde
 ]
 
 MIDDLEWARE = [
@@ -55,7 +61,13 @@ ROOT_URLCONF = 'seenedni.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+<<<<<<< HEAD
         'DIRS': [ BASE_DIR/'templates'],
+=======
+        'DIRS': [
+			BASE_DIR.parent / "templates",
+        ],
+>>>>>>> 0d3a6f83af63e844cf0483578cefd36c74e90cde
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -111,18 +123,18 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Set the user class to use for the database
+AUTH_USER_MODEL = "UserApp.User"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 # Use an absolute path prefix so generated URLs are like "/static/..."
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
-    BASE_DIR/ "static",
+    BASE_DIR.parent / "static",
 ]
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Default path for media
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
