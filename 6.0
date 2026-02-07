@@ -1,0 +1,13 @@
+Collecting Django
+  Downloading django-6.0.2-py3-none-any.whl.metadata (3.9 kB)
+Collecting asgiref>=3.9.1 (from Django)
+  Downloading asgiref-3.11.1-py3-none-any.whl.metadata (9.3 kB)
+Collecting sqlparse>=0.5.0 (from Django)
+  Downloading sqlparse-0.5.5-py3-none-any.whl.metadata (4.7 kB)
+Requirement already satisfied: tzdata in c:\users\sbs\appdata\local\programs\python\python312\lib\site-packages (from Django) (2025.2)
+Downloading django-6.0.2-py3-none-any.whl (8.3 MB)
+   ---------------------------------------- 8.3/8.3 MB 83.6 kB/s eta 0:00:00
+Downloading asgiref-3.11.1-py3-none-any.whl (24 kB)
+Downloading sqlparse-0.5.5-py3-none-any.whl (46 kB)
+Installing collected packages: sqlparse, asgiref, Django
+Successfully installed Django-6.0.2 asgiref-3.11.1 sqlparse-0.5.5

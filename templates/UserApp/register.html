@@ -43,6 +43,7 @@
 			font-size: 2rem;
 			font-weight: 800;
 			margin-bottom: 15px;
+			text-align: center;
 		}
 
 		.donation-card-left p {
@@ -115,13 +116,13 @@
 			border-radius: 999px;
 			padding: 10px 26px;
 			font-weight: 600;
-			background: #f59e0b;
-			border-color: #f59e0b;
+			background: #d97706;
+			border-color: #d97706;
 		}
 
 		.btn-donation:hover {
-			background: #d97706;
-			border-color: #d97706;
+			background: #b45309;
+			border-color: #b45309;
 		}
 
 		.link-yellow {
@@ -155,30 +156,50 @@
 		<div class="donation-card-left col-md-5">
 			<div>
 				<h1>Créez votre compte pour aider.</h1>
-                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-				<ul class="impact-list list-unstyled mb-0">
-					<li><span class="icon">1</span>Centralisez vos actions solidaires au même endroit.</li>
-					<li><span class="icon">2</span>Recevez des nouvelles des cas que vous soutenez.</li>
-					<li><span class="icon">3</span>Participez à une chaîne d&apos;entraide citoyenne.</li>
-				</ul>
 			</div>
 		</div>
 
 		<div class="donation-card-right col-md-7 bg-white">
+			<a href="{% url 'index' %}" class="btn btn-link text-muted p-0 mb-3" style="text-decoration: none;">
+				&#8592; Retour à l'accueil
+			</a>
 			<h2>Créer un compte</h2>
 			<p class="subtitle">Remplissez les informations ci-dessous pour rejoindre Seenedni.</p>
 
-			<form method="post">
+			{% if errors %}
+			<div class="alert alert-danger" role="alert">
+				<ul class="mb-0">
+					{% for error in errors %}
+					<li>{{ error }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+			{% endif %}
+
+			<form method="post" enctype="multipart/form-data">
 				{% csrf_token %}
+
+				<div class="mb-3">
+					<label for="id_account_type" class="form-label">Type de compte</label>
+					<select class="form-control" id="id_account_type" name="account_type" required>
+						<option value="donor" selected>Compte donateur</option>
+						<option value="association">Compte association</option>
+					</select>
+				</div>
 
 				<div class="mb-3">
 					<label for="id_last_name" class="form-label">Nom</label>
 					<input type="text" class="form-control" id="id_last_name" name="last_name" placeholder="Votre nom" required>
 				</div>
 
-				<div class="mb-3">
+				<div class="mb-3" id="first-name-group">
 					<label for="id_first_name" class="form-label">Prénom</label>
 					<input type="text" class="form-control" id="id_first_name" name="first_name" placeholder="Votre prénom" required>
+				</div>
+
+				<div class="mb-3">
+					<label for="id_photo" class="form-label">Photo de profil</label>
+					<input type="file" class="form-control" id="id_photo" name="photo" accept="image/*">
 				</div>
 
 				<div class="mb-3">
@@ -196,6 +217,12 @@
 					<input type="password" class="form-control" id="id_password2" name="password2" placeholder="Confirmez votre mot de passe" required>
 				</div>
 
+				<div class="mb-3" id="association-doc-group">
+					<label for="id_receipt" class="form-label">Document justificatif de l'association</label>
+					<input type="file" class="form-control" id="id_receipt" name="receipt" accept="image/*,application/pdf">
+					<small class="text-muted">Certificat, récépissé officiel, ou tout document prouvant que vous êtes une association enregistrée.</small>
+				</div>
+
 				<button type="submit" style="color:white"; class="btn btn-donation w-100 mb-3">Créer mon compte </button>
 
 				<p class="mb-0 text-center" style="font-size: 0.9rem;">
@@ -207,6 +234,47 @@
 	</div>
 
 	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+	<script>
+		(function () {
+			const accountTypeSelect = document.getElementById('id_account_type');
+			const firstNameGroup = document.getElementById('first-name-group');
+			const firstNameInput = document.getElementById('id_first_name');
+			const associationDocGroup = document.getElementById('association-doc-group');
+			const associationDocInput = document.getElementById('id_receipt');
+
+			function toggleFields() {
+				if (!accountTypeSelect) return;
+				const isAssociation = accountTypeSelect.value === 'association';
+
+				// Prénom uniquement pour les donateurs
+				if (isAssociation) {
+					firstNameGroup.style.display = 'none';
+					firstNameInput.removeAttribute('required');
+					firstNameInput.value = '';
+				} else {
+					firstNameGroup.style.display = '';
+					firstNameInput.setAttribute('required', 'required');
+				}
+
+				// Document justificatif obligatoire pour association uniquement
+				if (associationDocGroup && associationDocInput) {
+					if (isAssociation) {
+						associationDocGroup.style.display = '';
+						associationDocInput.setAttribute('required', 'required');
+					} else {
+						associationDocGroup.style.display = 'none';
+						associationDocInput.removeAttribute('required');
+						associationDocInput.value = '';
+					}
+				}
+			}
+
+			if (accountTypeSelect && firstNameGroup && firstNameInput) {
+				accountTypeSelect.addEventListener('change', toggleFields);
+				toggleFields();
+			}
+		})();
+	</script>
 </body>
 </html>
 

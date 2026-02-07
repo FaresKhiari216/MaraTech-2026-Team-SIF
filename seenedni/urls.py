@@ -26,8 +26,9 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('login/', login, name='login'),
     path('register/', register, name='register'),
+    path('logout/', logout, name='logout'),
     path('announcement/', include('AnnouncementApp.urls')),
-    path('event/', include('EventApp.urls')),
+    path('event/', include('EventApp.urls', namespace='events')),
 ]
 
 # Serve static files during development
