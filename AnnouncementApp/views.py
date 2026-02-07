@@ -22,11 +22,7 @@ def search_announcements(request):
         if emergency:
             results = results.filter(emergency=True)
 
-    return render(request, "announcement/search_results.html", {
-        "form": form,
-        "results": results
-    })
-
+    return render(request, "announcement/search_results.html", {"form": form, "results": results})
 
 def new_announcement(request):
     if request.method == 'POST':

@@ -1,7 +1,4 @@
 {% load static %}
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,14 +27,9 @@
 
         <!-- Template Stylesheet -->
         <link href="{% static 'css/style.css' %}" rel="stylesheet">
-
-        
-
     </head>
 
     <body>
-
-        
         <!-- Topbar start -->
         <div class="container-fluid fixed-top px-0">
             <div class="container-fluid px-0">
@@ -51,9 +43,9 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
                         <div class="navbar-nav mx-auto gap-4">
-                            <a href="{% url 'home' %}" class="nav-item nav-link {% block home_is_active %} {% endblock home_is_active %}">Acceuil</a>
-                            <a href="{% url 'event' %}" class="nav-item nav-link {% block event_is_active %} {% endblock event_is_active %}">Evenement</a>
-                            <a href="{% url 'announcement' %}" class="nav-item nav-link {% block announcement_is_active %} {% endblock announcement_is_active %}">Cas sociaux</a>
+                            <a href="{% url 'index' %}" class="nav-item nav-link {% block home_is_active %} {% endblock home_is_active %}">Acceuil</a>
+                            <a href="{% url 'events:index' %}" class="nav-item nav-link {% block event_is_active %} {% endblock event_is_active %}">Evenement</a>
+                            <a href="{% url 'announcements:index' %}" class="nav-item nav-link {% block announcement_is_active %} {% endblock announcement_is_active %}">Cas sociaux</a>
 
                             <div class="nav-item dropdown">
                                 
@@ -89,12 +81,8 @@
         </div>
         <!-- Footer End -->
 
-        
-
         <!-- Back to Top -->
         <a href="#" class="btn btn-primary border-3 border-light back-to-top"><i class="fa fa-arrow-up"></i> </a>   
-        
-
         
         <!-- JavaScript Libraries -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
