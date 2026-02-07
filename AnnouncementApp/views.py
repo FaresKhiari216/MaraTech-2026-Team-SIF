@@ -5,10 +5,9 @@ from .forms import AnnouncementForm, AnnouncementSearchForm
 
 def index(request):
     announcements = Announcement.objects.all()
-    form = AnnouncementSearchForm()  # formulaire de recherche vide pour le template
+    form = AnnouncementSearchForm()
     context = {"Announcements": announcements, "form": form}
     return render(request, "announcement.html", context)
-
 
 def search_announcements(request):
     form = AnnouncementSearchForm(request.GET or None)
@@ -26,7 +25,6 @@ def search_announcements(request):
         if emergency:
             results = results.filter(emergency=True)
 
-    # On passe aussi "Announcements" pour que le template fonctionne même si aucun résultat
     return render(
         request,
         "announcement.html",
@@ -47,8 +45,10 @@ def new_announcement(request):
     return render(request, "announcement/create_announcement.html", {"form": form})
 
 def details_announcement(request, announcement_id):
-	announcement_content = Announcement.objects.get(pk = announcement_id)
-	return render(request, "announcement/Details_Announcement.html", {"announcement":announcement_content})
+    announcement_content = Announcement.objects.get(pk=announcement_id)
+    announcement_content.views += 1
+    announcement_content.save(update_fields=["views"])
+    return render(request, "announcement/Details_Announcement.html", {"announcement": announcement_content})
 
 def edit_announcement(request, announcement_id):
 	announcement = Announcement.objects.get(pk = announcement_id)

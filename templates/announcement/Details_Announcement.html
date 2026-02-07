@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% block announcement_is_active %}active{% endblock announcement_is_active %}
+
+<div class="container py-5" style="margin-top: 100px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-11 col-xl-10">
+            <a href="{% url 'announcements:index' %}" class="btn btn-outline-secondary rounded-pill mb-4 px-4 py-2">
+                &larr; Retour aux annonces
+            </a>
+            <div class="card shadow border-0">
+                <div class="row g-3 align-items-center">
+                    {% if announcement.photo %}
+                    <div class="col-md-5">
+                        <img src="{{ announcement.photo.url }}" class="img-fluid w-100 rounded-start" style="max-height: 420px; object-fit: cover;" alt="{{ announcement.title }}">
+                    </div>
+                    {% endif %}
+                    <div class="col-md-{% if announcement.photo %}7{% else %}12{% endif %}">
+                        <div class="card-body p-4 p-md-5">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <span class="badge bg-light text-dark me-2">{{ announcement.get_category_display }}</span>
+                                    {% if announcement.emergency %}
+                                        <span class="badge bg-danger">Urgent</span>
+                                    {% endif %}
+                                </div>
+                                <div class="text-end small text-muted">
+                                    <div>
+                                        <i class="fa fa-calendar me-1"></i>
+                                        {{ announcement.created_at|date:"d M Y" }}
+                                    </div>
+                                    <div>
+                                        <i class="fa fa-eye me-1"></i>
+                                        {{ announcement.views }} vues
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h1 class="h3 mb-3">{{ announcement.title }}</h1>
+
+                            <p class="mb-2 text-muted">
+                                <i class="fas fa-user me-2"></i>
+                                Bénéficiaire : {{ announcement.beneficiary }}
+                            </p>
+
+                            <hr>
+
+                            <h2 class="h5 mb-3">Description</h2>
+                            <p class="mb-4" style="white-space: pre-line; word-wrap: break-word; overflow-wrap: break-word; line-height: 1.7; font-size: 0.98rem;">
+                                {{ announcement.description }}
+                            </p>
+
+                            {% if announcement.link %}
+                            <div class="mt-3">
+                                <a href="{{ announcement.link }}" target="_blank" class="btn btn-primary rounded-pill px-4">
+                                    Faire un don
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
