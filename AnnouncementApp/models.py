@@ -20,6 +20,7 @@ class Announcement(models.Model):
     views = models.PositiveIntegerField(default=0)
     photo = models.ImageField(upload_to="Announcements/", blank=True, null=True)
     description = models.TextField(blank=False, null=False)
+    emergency = models.BooleanField(default=False)
     beneficiary = models.CharField(max_length=100, blank=False, null=False)
     link = models.URLField(blank=False, null=False)
 
