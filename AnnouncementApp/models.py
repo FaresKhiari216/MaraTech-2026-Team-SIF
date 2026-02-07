@@ -1,5 +1,6 @@
 from django.db import models
 from UserApp.models import User
+from UserApp.models import Association
 
 class Announcement(models.Model):
     CATEGORY_CHOICES = [
@@ -8,13 +9,12 @@ class Announcement(models.Model):
         ("enfants", "أطفال"),
         ("education", "تعليم"),
         ("renovation", "ترميم"),
-        ("autres", "أخرى"),
     ]
 
     category = models.CharField(
         max_length=20,
         choices=CATEGORY_CHOICES,
-        default="autres"
+        default="handicap"
     )
     title = models.CharField(max_length=100, blank=False, null=False)
     views = models.PositiveIntegerField(default=0)
@@ -23,7 +23,6 @@ class Announcement(models.Model):
     emergency = models.BooleanField(default=False)
     beneficiary = models.CharField(max_length=100, blank=False, null=False)
     link = models.URLField(blank=False, null=False)
-
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

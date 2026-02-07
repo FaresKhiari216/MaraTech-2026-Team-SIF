@@ -1,14 +1,31 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from UserApp.models import Association
 from .models import Announcement
 from .forms import AnnouncementForm, AnnouncementSearchForm
 
+
 def index(request):
-	context = {"Announcements" : Announcement.objects.all()}
-	return render(request, "announcement.html", context)
+    announcements = Announcement.objects.all()
+    form = AnnouncementSearchForm()
+    is_association = False
+    if request.user.is_authenticated:
+        is_association = Association.objects.filter(user=request.user).exists()
+    context = {
+        "Announcements": announcements,
+        "form": form,
+        "logged_in_user": request.user,
+        "is_association": is_association,
+    }
+    return render(request, "announcement.html", context)
 
 def search_announcements(request):
     form = AnnouncementSearchForm(request.GET or None)
     results = Announcement.objects.all()
+
+    is_association = False
+    if request.user.is_authenticated:
+        is_association = Association.objects.filter(user=request.user).exists()
 
     if form.is_valid():
         category = form.cleaned_data.get("category")
@@ -22,8 +39,20 @@ def search_announcements(request):
         if emergency:
             results = results.filter(emergency=True)
 
-    return render(request, "announcement/search_results.html", {"form": form, "results": results})
+    return render(
+        request,
+        "announcement.html",
+        {
+            "form": form,
+            "results_search": results,
+            "Announcements": results,
+            "logged_in_user": request.user,
+            "is_association": is_association,
+        },
+    )
 
+
+@login_required
 def new_announcement(request):
     if request.method == 'POST':
         form = AnnouncementForm(request.POST, request.FILES)
@@ -38,20 +67,28 @@ def new_announcement(request):
     return render(request, "announcement/create_announcement.html", {"form": form})
 
 def details_announcement(request, announcement_id):
-	announcement_content = Announcement.objects.get(pk = announcement_id)
-	return render(request, "announcement/Details_Announcement.html", {"announcement":announcement_content})
+    announcement_content = Announcement.objects.get(pk=announcement_id)
+    announcement_content.views += 1
+    announcement_content.save(update_fields=["views"])
+    is_association = False
+    if request.user.is_authenticated:
+        is_association = Association.objects.filter(user=request.user).exists()
+    return render(
+        request,
+        "announcement/Details_Announcement.html",
+        {"announcement": announcement_content, "is_association": is_association},
+    )
 
 def edit_announcement(request, announcement_id):
-	announcement = Announcement.objects.get(pk = announcement_id)
-	if request.method == 'POST':
-		form = AnnouncementForm(request.POST, instance=announcement, user=request.user)
-
-		if (form.is_valid()):
-			form.save()
-			return redirect('announcements:details_announcement', announcement_id=announcement.id)
-	else:
-		form = AnnouncementForm(instance=announcement, user=request.user)
-	return render(request, "announcement/Edit_Announcement.html", {"announcement_object": announcement, "announcement":form, "announcement_id": announcement})
+    announcement = Announcement.objects.get(pk=announcement_id)
+    if request.method == "POST":
+        form = AnnouncementForm(request.POST, request.FILES, instance=announcement)
+        if form.is_valid():
+            form.save()
+            return redirect("announcements:Details_Announcement", announcement_id=announcement.id)
+    else:
+        form = AnnouncementForm(instance=announcement)
+    return render(request, "announcement/edit_announcement.html", {"form": form, "announcement": announcement})
 
 def delete_announcement(request, announcement_id):
 	announcement = Announcement.objects.get(pk = announcement_id, user=request.user)

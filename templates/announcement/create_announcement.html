@@ -5,6 +5,11 @@
 
 {% block content %}
 <div class="container py-5" style="margin-top: 4rem;">
+    <div class="mb-3">
+        <a href="{% url 'announcements:index' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+            &larr; Retour aux annonces
+        </a>
+    </div>
     <div class="row justify-content-center">
         <div class="col-lg-8 col-xl-7">
             <div class="card border-0 shadow-lg">

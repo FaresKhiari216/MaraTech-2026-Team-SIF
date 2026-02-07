@@ -12,110 +12,132 @@
                     <p class="fs-5 text-uppercase text-primary">Cas sociaux</p>
                     <h1 style ="font-size: 2.75rem;" class="display-3">Trouver quelqu'un dans le besoin</h1>
                 </div>
+                
+                {% if is_association %}
                 <div class="text-center mb-4">
-                    {% if request.user.is_authenticated and request.user.type == 'association' %}
+
                     <a href="{% url 'announcements:create' %}" class="btn btn-primary rounded-pill px-4 py-2">
                         <i class="fa fa-plus me-2"></i>Créer une annonce
                     </a>
-                    {% endif %}
+                    
                 </div>
-                <!-- Search bar -->
+                {% endif %}
+                <!-- Search + filters using AnnouncementSearchForm -->
                 <div class="row justify-content-center mb-4">
-                    <div class="col-lg-6 col-md-8">
-                        <form method="get" class="d-flex shadow-sm rounded-pill overflow-hidden bg-white">
-                            <input type="text" name="q" class="form-control border-0 ps-4" placeholder="Rechercher un cas social (nom, ville, type d'aide...)" aria-label="Rechercher un cas social">
-                            <button class="btn btn-primary px-4" type="submit" style="border-radius: 0 999px 999px 0;">
-                                <i style="font-size:16px" class="fa fa-search me-2"></i>Rechercher
-                            </button>
+                    <div class="col-lg-8 col-md-10">
+                        <form method="get" action="{% url 'announcements:search' %}" class="row g-2 align-items-center">
+                            <div class="col-md-4">
+                                {{ form.category }}
+                            </div>
+                            <div class="col-md-5">
+                                {{ form.keywords }}
+                            </div>
+                            <div class="col-md-3 d-flex align-items-center gap-2 justify-content-end">
+                                <div class="form-check mb-0">
+                                    {{ form.emergency }}
+                                    <label class="form-check-label" for="{{ form.emergency.id_for_label }}">Urgent</label>
+                                </div>
+                                <button class="btn btn-primary rounded-pill px-4" type="submit">
+                                    <i style="font-size:16px" class="fa fa-search me-2"></i>Filtrer
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
-                <!-- Category filter -->
-                <div class="row justify-content-center mb-4">
-                    <div class="col-lg-6 col-md-8 d-flex justify-content-center gap-3 flex-wrap">
-                        <button type="submit" form="filter-form" name="category" value="cat1" class="btn btn-outline-primary rounded-pill px-4 py-2">cat1</button>
-                        <button type="submit" form="filter-form" name="category" value="cat2" class="btn btn-outline-primary rounded-pill px-4 py-2">cat2</button>
-                    </div>
-                </div>
-
-                <!-- Hidden form to handle filters/search together -->
-                <form id="filter-form" method="get" class="d-none">
-                    <input type="hidden" name="q" value="">
-                    <input type="hidden" name="category" value="">
-                </form>
                 <div class="row g-4 justify-content-center">
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="sermon-item wow fadeIn" data-wow-delay="0.1s">
-                            <div class="overflow-hidden p-4 pb-0">
-                                <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="">
-                            </div>
-                            <div class="p-4">
-                                <div class="sermon-meta d-flex justify-content-between pb-2">
-                                    <div class="">
-                                        <small><i class="fa fa-calendar me-2 text-muted"></i><a href="" class="text-muted me-2">13 Nov 2023</small></a>
-                                        <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted">Admin</small></a>
-                                    </div>
-                                    <div class="">
-                                        <a href="" class="me-1"><i class="fas fa-video text-muted"></i></a>
-                                        <a href="" class="me-1"><i class="fas fa-headphones text-muted"></i></a>
-                                        <a href="" class="me-1"><i class="fas fa-file-alt text-muted"></i></a>
-                                        <a href="" class=""><i class="fas fa-image text-muted"></i></a>
-                                    </div>
+                    {% if results_search %}
+                        {% for announcement in results_search %}
+                        <div class="col-lg-6 col-xl-4">
+                            <div class="sermon-item wow fadeIn" data-wow-delay="0.{{ forloop.counter }}s">
+                                <div class="overflow-hidden p-4 pb-0">
+                                    {% if announcement.photo %}
+                                        <img src="{{ announcement.photo.url }}" class="img-fluid w-100" alt="{{ announcement.title }}">
+                                    {% else %}
+                                        <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ announcement.title }}">
+                                    {% endif %}
                                 </div>
-                                <a href="" class="d-inline-block h4 lh-sm mb-3">test</a>
-                                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-                                aliquip ex ea commodo consequat.</p>
+                                <div class="p-4">
+                                    <div class="sermon-meta d-flex justify-content-between pb-2">
+                                        <div>
+                                            <small>
+                                                <i class="fa fa-calendar me-2 text-muted"></i>
+                                                {{ announcement.created_at|date:"d M Y" }}
+                                            </small>
+                                            <br>
+                                            <small>
+                                                <i class="fas fa-user me-2 text-muted"></i>
+                                                {{ announcement.beneficiary|truncatechars:15 }}
+                                            </small>
+                                            <br>
+                                            <small>
+                                                <i class="fa fa-eye me-2 text-muted"></i>
+                                                {{ announcement.views }} vues
+                                            </small>
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="badge bg-light text-dark mb-1">{{ announcement.get_category_display }}</span><br>
+                                            {% if announcement.emergency %}
+                                                <span class="badge bg-danger">Urgent</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'announcements:Details_Announcement' announcement.id %}" class="d-inline-block h4 lh-sm mb-3">{{ announcement.title|truncatechars:20 }}</a>
+                                    <p class="mb-0">{{ announcement.description|truncatechars:100 }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                   <div class="col-lg-6 col-xl-4">
-                        <div class="sermon-item wow fadeIn" data-wow-delay="0.3s">
-                            <div class="overflow-hidden p-4 pb-0">
-                                <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="">
-                            </div>
-                            <div class="p-4">
-                                <div class="sermon-meta d-flex justify-content-between pb-2">
-                                    <div class="">
-                                        <small><i class="fa fa-calendar me-2 text-muted"></i><a href="" class="text-muted me-2">13 Nov 2023</small></a>
-                                        <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted">Admin</small></a>
-                                    </div>
-                                    <div class="">
-                                        <a href="" class="me-1"><i class="fas fa-video text-muted"></i></a>
-                                        <a href="" class="me-1"><i class="fas fa-headphones text-muted"></i></a>
-                                        <a href="" class="me-1"><i class="fas fa-file-alt text-muted"></i></a>
-                                        <a href="" class=""><i class="fas fa-image text-muted"></i></a>
-                                    </div>
+                        {% empty %}
+                        <div class="col-12 text-center">
+                            <p class="text-muted mb-0">Aucune annonce pour le moment.</p>
+                        </div>
+                        {% endfor %}                      
+                    {% else %}
+                        {% for announcement in Announcements %}
+                        <div class="col-lg-6 col-xl-4">
+                            <div class="sermon-item wow fadeIn" data-wow-delay="0.{{ forloop.counter }}s">
+                                <div class="overflow-hidden p-4 pb-0">
+                                    {% if announcement.photo %}
+                                        <img src="{{ announcement.photo.url }}" class="img-fluid w-100" alt="{{ announcement.title }}">
+                                    {% else %}
+                                        <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ announcement.title }}">
+                                    {% endif %}
                                 </div>
-                                <a href="" class="d-inline-block h4 lh-sm mb-3">test</a>
-                                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-                                aliquip ex ea commodo consequat.</p>
+                                <div class="p-4">
+                                    <div class="sermon-meta d-flex justify-content-between pb-2">
+                                        <div>
+                                            <small>
+                                                <i class="fa fa-calendar me-2 text-muted"></i>
+                                                {{ announcement.created_at|date:"d M Y" }}
+                                            </small>
+                                            <br>
+                                            <small>
+                                                <i class="fas fa-user me-2 text-muted"></i>
+                                                {{ announcement.beneficiary|truncatechars:15 }}
+                                            </small>
+                                            <br>
+                                            <small>
+                                                <i class="fa fa-eye me-2 text-muted"></i>
+                                                {{ announcement.views }} vues
+                                            </small>
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="badge bg-light text-dark mb-1">{{ announcement.get_category_display }}</span><br>
+                                            {% if announcement.emergency %}
+                                                <span class="badge bg-danger">Urgent</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'announcements:Details_Announcement' announcement.id %}" class="d-inline-block h4 lh-sm mb-3">{{ announcement.title|truncatechars:20 }}</a>
+                                    <p class="mb-0">{{ announcement.description|truncatechars:100 }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                   <div class="col-lg-6 col-xl-4">
-                        <div class="sermon-item wow fadeIn" data-wow-delay="0.5s">
-                            <div class="overflow-hidden p-4 pb-0">
-                                <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="">
-                            </div>
-                            <div class="p-4">
-                                <div class="sermon-meta d-flex justify-content-between pb-2">
-                                    <div class="">
-                                        <small><i class="fa fa-calendar me-2 text-muted"></i><a href="" class="text-muted me-2">13 Nov 2023</small></a>
-                                        <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted">Admin</small></a>
-                                    </div>
-                                    <div class="">
-                                        <a href="" class="me-1"><i class="fas fa-video text-muted"></i></a>
-                                        <a href="" class="me-1"><i class="fas fa-headphones text-muted"></i></a>
-                                        <a href="" class="me-1"><i class="fas fa-file-alt text-muted"></i></a>
-                                        <a href="" class=""><i class="fas fa-image text-muted"></i></a>
-                                    </div>
-                                </div>
-                                <a href="" class="d-inline-block h4 lh-sm mb-3">test</a>
-                                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-                                aliquip ex ea commodo consequat.</p>
-                            </div>
+                        {% empty %}
+                        <div class="col-12 text-center">
+                            <p class="text-muted mb-0">Aucune annonce pour le moment.</p>
                         </div>
-                    </div>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>
