@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block home_is_active %}active{% endblock home_is_active %}
+
+{% block content %}
+       
+        <!-- About Satrt -->
+        <div class="container-fluid about py-5">
+            <div class="container py-5">
+                <div class="row g-5 mb-5">
+                    <div class="col-xl-6">
+                        <div class="row g-4">
+                            <div class="col-6">
+                                <img src="{% static 'img/about-1.jpg' %}" class="img-fluid h-100 wow zoomIn" data-wow-delay="0.1s" alt="">
+                            </div>
+                            <div class="col-6">
+                                <img src="{% static 'img/about-2.jpg' %}" class="img-fluid pb-3 wow zoomIn" data-wow-delay="0.1s" alt="">
+                                <img src="{% static 'img/about-3.jpg' %}" class="img-fluid pt-3 wow zoomIn" data-wow-delay="0.1s" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 wow fadeIn" data-wow-delay="0.5s">
+                        <p class="fs-5 text-uppercase text-primary">A propos de Seenedni</p>
+                        <h1 class="display-5 pb-4 m-0">Aidez aujourd’hui, changez une vie.</h1>
+                        <p class="pb-4">Seenedni est une plateforme solidaire où les associations publient des cas sociaux vérifiés, permettant aux citoyens de contribuer par des dons et d’apporter une aide concrète aux personnes dans le besoin</p>
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <div class="ps-3 d-flex align-items-center justify-content-start">
+                                    <span class="bg-primary btn-md-square rounded-circle mt-4 me-2"><i class="fa fa-eye text-dark fa-4x mb-5 pb-2"></i></span>
+                                    <div class="ms-4">
+                                        <h5>Notre Vision</h5>
+                                        <p>Notre vision est de digitaliser la solidarité afin de rendre l’aide plus accessible, plus rapide et plus efficace</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ps-3 d-flex align-items-center justify-content-start">
+                                    <span class="bg-primary btn-md-square rounded-circle mt-4 me-2"><i class="fa fa-flag text-dark fa-4x mb-5 pb-2"></i></span>
+                                    <div class="ms-4">
+                                        <h5>Notre Mission</h5>
+                                        <p>Offrir aux associations une plateforme fiable pour partager des cas sociaux et mobiliser la solidarité citoyenne.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!-- About End -->
+
+    {% endblock content %}

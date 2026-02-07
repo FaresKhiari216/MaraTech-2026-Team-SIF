@@ -4,7 +4,7 @@ from .forms import AnnouncementForm, AnnouncementSearchForm
 
 def index(request):
 	context = {"Announcements" : Announcement.objects.all()}
-	return render(request, "Announcements.html", context)
+	return render(request, "announcement.html", context)
 
 def search_announcements(request):
     form = AnnouncementSearchForm(request.GET or None)
@@ -22,7 +22,7 @@ def search_announcements(request):
         if emergency:
             results = results.filter(emergency=True)
 
-    return render(request, "announcements/search_results.html", {
+    return render(request, "announcement/search_results.html", {
         "form": form,
         "results": results
     })
@@ -39,11 +39,11 @@ def new_announcement(request):
     else:
         form = AnnouncementForm()
 
-    return render(request, "Announcements/Add_Announcement.html", {"form": form})
+    return render(request, "Announcement/Add_Announcement.html", {"form": form})
 
 def details_announcement(request, announcement_id):
 	announcement_content = Announcement.objects.get(pk = announcement_id)
-	return render(request, "Announcements/Details_Announcement.html", {"announcement":announcement_content})
+	return render(request, "Announcement/Details_Announcement.html", {"announcement":announcement_content})
 
 def edit_announcement(request, announcement_id):
 	announcement = Announcement.objects.get(pk = announcement_id)
@@ -55,9 +55,10 @@ def edit_announcement(request, announcement_id):
 			return redirect('Announcements:Details_Note', note_id=announcement.id)
 	else:
 		form = AnnouncementForm(instance=announcement, user=request.user)
-	return render(request, "Announcements/Edit_Announcement.html", {"announcement_object": announcement, "announcement":form, "announcement_id": announcement})
+	return render(request, "Announcement/Edit_Announcement.html", {"announcement_object": announcement, "announcement":form, "announcement_id": announcement})
 
 def delete_announcement(request, announcement_id):
 	announcement = Announcement.objects.get(pk = announcement_id, user=request.user)
 	announcement.delete()
 	return redirect('Announcements:index')
+
