@@ -37,13 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< HEAD
-    'AnnoucementApp',
-=======
     'UserApp',
     'AnnouncementApp',
     'EventApp',
->>>>>>> 0d3a6f83af63e844cf0483578cefd36c74e90cde
 ]
 
 MIDDLEWARE = [
@@ -61,13 +57,9 @@ ROOT_URLCONF = 'seenedni.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
-        'DIRS': [ BASE_DIR/'templates'],
-=======
         'DIRS': [
-			BASE_DIR.parent / "templates",
+			BASE_DIR / "templates",
         ],
->>>>>>> 0d3a6f83af63e844cf0483578cefd36c74e90cde
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
