@@ -91,7 +91,7 @@ def edit_announcement(request, announcement_id):
     return render(request, "announcement/edit_announcement.html", {"form": form, "announcement": announcement})
 
 def delete_announcement(request, announcement_id):
-	announcement = Announcement.objects.get(pk = announcement_id, user=request.user)
+	announcement = Announcement.objects.get(pk = announcement_id)
 	announcement.delete()
 	return redirect('announcements:index')
 

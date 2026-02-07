@@ -12,9 +12,17 @@
                     &larr; Retour aux annonces
                 </a>
                 {% if is_association %}
-                <a href="{% url 'announcements:Edit_Announcement' announcement.id %}" class="btn btn-warning rounded-pill px-4 py-2">
-                    <i class="fa fa-edit me-2"></i>Éditer l'annonce
-                </a>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'announcements:Edit_Announcement' announcement.id %}" class="btn btn-warning rounded-pill px-4 py-2">
+                        <i class="fa fa-edit me-2"></i>Éditer l'annonce
+                    </a>
+                    <form method="post" action="{% url 'announcements:Delete_Announcement' announcement.id %}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette annonce ? Cette action est définitive.');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger rounded-pill px-4 py-2">
+                            <i class="fa fa-trash me-2"></i>Supprimer
+                        </button>
+                    </form>
+                </div>
                 {% endif %}
             </div>
             <div class="card shadow border-0">
