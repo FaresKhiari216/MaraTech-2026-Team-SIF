@@ -27,6 +27,11 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('register/', register, name='register'),
     path('logout/', logout, name='logout'),
+    path('profile/', profile, name='profile'),
+    path('admin-stats/', admin_stats, name='admin_stats'),
+    path('admin-associations/', admin_stat_doss_asso, name='admin_stat_doss_asso'),
+    path('password-reset/', password_reset_request, name='password_reset'),
+    path('password-reset/<uidb64>/<token>/', password_reset_confirm, name='password_reset_confirm'),
     path('announcement/', include('AnnouncementApp.urls')),
     path('event/', include('EventApp.urls', namespace='events')),
 ]

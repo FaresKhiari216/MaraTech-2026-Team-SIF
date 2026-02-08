@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-{% block announcement_is_active %}active{% endblock announcement_is_active %}
+{% block announcement_is_active %}{% endblock announcement_is_active %}
 
 <div class="container py-5" style="margin-top: 100px;">
     <div class="row justify-content-center">
@@ -11,7 +11,7 @@
                 <a href="{% url 'announcements:index' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2">
                     &larr; Retour aux annonces
                 </a>
-                {% if is_association %}
+                {% if is_association or request.user.is_staff %}
                 <div class="d-flex gap-2">
                     <a href="{% url 'announcements:Edit_Announcement' announcement.id %}" class="btn btn-warning rounded-pill px-4 py-2">
                         <i class="fa fa-edit me-2"></i>Éditer l'annonce
@@ -68,13 +68,11 @@
                                 {{ announcement.description }}
                             </p>
 
-                            {% if announcement.link %}
                             <div class="mt-3">
-                                <a href="{{ announcement.link }}" target="_blank" class="btn btn-primary rounded-pill px-4">
+                                <a href="{% url 'announcements:Donate_Announcement' announcement.id %}" class="btn btn-primary rounded-pill px-4">
                                     Faire un don
                                 </a>
                             </div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>

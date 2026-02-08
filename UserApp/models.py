@@ -61,6 +61,7 @@ class Association(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=150)
     description = models.TextField()
+    is_verified = models.BooleanField(default=False)
     category = models.CharField(
         max_length=100,
         choices=ASSOCIATION_CATEGORY_CHOICES
@@ -80,4 +81,4 @@ class Association(models.Model):
     )
 
     def __str__(self):
-        return f"{self.nom} - {self.category}"
+        return f"{self.name} - {self.category}"

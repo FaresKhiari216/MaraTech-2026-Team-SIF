@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% load static %}
-
+        {% block announcement_is_active %}active{% endblock announcement_is_active %}
         {% block content %}
 
-        {% block announcement_is_active %}active{% endblock announcement_is_active %}
+
         <!-- Sermon Start -->
         <div class="container-fluid sermon py-5">
             <div class="container py-5">
@@ -13,7 +13,7 @@
                     <h1 style ="font-size: 2.75rem;" class="display-3">Trouver quelqu'un dans le besoin</h1>
                 </div>
                 
-                {% if is_association %}
+                {% if is_association or request.user.is_staff %}
                 <div class="text-center mb-4">
 
                     <a href="{% url 'announcements:create' %}" class="btn btn-primary rounded-pill px-4 py-2">
@@ -93,7 +93,7 @@
                         </div>
                         {% endfor %}                      
                     {% else %}
-                        {% for announcement in Announcements %}
+                        {% for announcement in announcements %}
                         <div class="col-lg-6 col-xl-4">
                             <div class="sermon-item wow fadeIn" data-wow-delay="0.{{ forloop.counter }}s">
                                 <div class="overflow-hidden p-4 pb-0">

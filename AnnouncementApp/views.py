@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from UserApp.models import Association
-from .models import Announcement
+from .models import Announcement, Donation
 from .forms import AnnouncementForm, AnnouncementSearchForm
 
 
@@ -12,7 +12,7 @@ def index(request):
     if request.user.is_authenticated:
         is_association = Association.objects.filter(user=request.user).exists()
     context = {
-        "Announcements": announcements,
+        "announcements": announcements,
         "form": form,
         "logged_in_user": request.user,
         "is_association": is_association,
@@ -58,7 +58,9 @@ def new_announcement(request):
         form = AnnouncementForm(request.POST, request.FILES)
         if form.is_valid():
             annoucement = form.save(commit=False)
-            annoucement.user = request.user
+            association = Association.objects.filter(user=request.user).first()
+            if association:
+                annoucement.association = association
             annoucement.save()
             return redirect('announcements:index')
     else:
@@ -94,4 +96,17 @@ def delete_announcement(request, announcement_id):
 	announcement = Announcement.objects.get(pk = announcement_id)
 	announcement.delete()
 	return redirect('announcements:index')
+
+
+def donate_announcement(request, announcement_id):
+    announcement = get_object_or_404(Announcement, pk=announcement_id)
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    Donation.objects.create(donateur=request.user, announcement=announcement)
+
+    if announcement.link:
+        return redirect(announcement.link)
+
+    return redirect('announcements:Details_Announcement', announcement_id=announcement.id)
 

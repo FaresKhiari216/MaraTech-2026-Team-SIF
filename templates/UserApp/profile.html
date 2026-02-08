@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5" style="margin-top: 100px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body d-flex align-items-center">
+                    <div class="me-4">
+                        <img src="{{ user_obj.photo.url }}" alt="Photo de profil" class="rounded-circle" style="width: 90px; height: 90px; object-fit: cover;">
+                    </div>
+                    <div>
+                        <h3 class="mb-1">{{ user_obj.first_name }} {{ user_obj.last_name }}</h3>
+                        <p class="mb-1 text-muted"><i class="fa fa-envelope me-2"></i>{{ user_obj.email }}</p>
+                        <p class="mb-0 text-muted"><i class="fa fa-calendar me-2"></i>Inscrit le {{ user_obj.creation_date|date:"d M Y" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            {% if is_association and association %}
+            <!-- Profil Association -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="mb-3">Informations de l'association</h4>
+                    <p class="mb-1"><strong>Nom :</strong> {{ association.name }}</p>
+                    <p class="mb-1"><strong>Email :</strong> {{ association.email }}</p>
+                    <p class="mb-1"><strong>Catégorie :</strong> {{ association.get_category_display }}</p>
+                    <p class="mb-0"><strong>Description :</strong> {{ association.description }}</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="mb-3">Statistiques</h4>
+                    <div class="row text-center mb-3">
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <h5 class="mb-1">Événements créés</h5>
+                            <p class="display-6 mb-0">{{ stats.total_events }}</p>
+                        </div>
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <h5 class="mb-1">Annonces créées</h5>
+                            <p class="display-6 mb-0">{{ stats.total_announcements }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h5 class="mb-1">Annonces financées</h5>
+                            <p class="display-6 mb-0">{{ stats.reached_announcements }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+            <!-- Profil Utilisateur Normal -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="mb-3">Événements suivis</h4>
+                    {% if events_participating %}
+                        {% for follow in events_participating %}
+                        <div class="d-flex justify-content-between align-items-center border-bottom py-3">
+                            <div>
+                                <h5 class="mb-1">{{ follow.event.title }}</h5>
+                                <p class="mb-1 text-muted" style="font-size: 0.9rem;">
+                                    <i class="fas fa-building me-1"></i>{{ follow.event.association.name }}
+                                </p>
+                                <small class="text-muted">
+                                    <i class="fa fa-calendar me-1"></i>
+                                    {{ follow.event.start_at|date:"d M Y" }} - {{ follow.event.finish_at|date:"d M Y" }}
+                                </small>
+                            </div>
+                            <div class="text-end">
+                                <a href="{% url 'events:Details_event' follow.event.id %}" class="btn btn-sm btn-outline-secondary mb-2 w-100">Voir</a>
+                                <a href="{% url 'events:cancel_event' follow.event.id %}" class="btn btn-sm rounded-pill btn-annuler w-100">Annuler</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="mb-0 text-muted">Vous ne participez à aucun événement pour le moment.</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

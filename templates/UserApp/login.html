@@ -181,6 +181,11 @@
 
 			<form method="post">
 				{% csrf_token %}
+				{% if error %}
+					<div class="alert alert-warning py-2" role="alert" style="border-radius: 999px; font-size: 0.9rem;">
+						{{ error }}
+					</div>
+				{% endif %}
 				<div class="mb-3">
 					<label for="id_email" class="form-label">Adresse e-mail</label>
 					<input style ="font-size: 1rem;" type="email" class="form-control" id="id_email" name="email" placeholder="vous@example.com" required>
@@ -198,7 +203,7 @@
 							Se souvenir de moi
 						</label>
 					</div>
-					<a href="#" class="link-yellow">Mot de passe oublié ?</a>
+					<a href="{% url 'password_reset' %}" class="link-yellow">Mot de passe oublié ?</a>
 				</div>
 
 				<button style="color:white"; type="submit" class="btn btn-donation w-100 mb-3">Se connecter et aider</button>

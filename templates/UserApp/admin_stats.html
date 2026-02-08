@@ -1,0 +1,186 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<title>Admin Seenedni </title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="admin-dashboard">
+
+<!-- Nav Bar : Start -->
+
+<div class="admin-dashboard-layout" style="display: flex; min-height: 100vh;">
+	<aside class="admin-sidebar" style="width: 240px; background:#020617; padding: 1.75rem 1.25rem; display:flex; flex-direction:column; justify-content:space-between; border-right:1px solid rgba(148,163,184,0.25);">
+		<div>
+			<div class="admin-sidebar-header mb-4">
+				<span class="admin-sidebar-logo">S</span>
+				<div>
+					<div class="admin-sidebar-title">Seenedni</div>
+					<div class="admin-sidebar-subtitle">Espace admin</div>
+				</div>
+			</div>
+			<nav class="admin-sidebar-nav">
+				<a href="{% url 'admin_stats' %}" class="admin-sidebar-link active">Statistiques</a>
+				<a href="{% url 'admin_stat_doss_asso' %}" class="admin-sidebar-link">Dossier associations</a>
+			</nav>
+		</div>
+		<div class="admin-sidebar-footer">
+			<a href="{% url 'index' %}" class="admin-sidebar-btn primary">Aller vers Seenedni</a>
+			<a href="{% url 'logout' %}" class="admin-sidebar-btn secondary">Se déconnecter</a>
+		</div>
+	</aside>
+
+<!-- Nav Bar : End -->
+
+<!-- Filter : Start-->
+
+	<main class="admin-dashboard-main" style="flex: 1;">
+		<div class="container py-5 admin-dashboard-container">
+			<div class="admin-dashboard-header d-flex justify-content-between align-items-center mb-4">
+				<div>
+					<h1 class="mb-1 text-white">Statistiques des dons</h1>
+					<p class="mb-0 text-light small">
+						{% if period == 'daily' %}
+							Répartition des dons par heure (aujourd'hui)
+						{% else %}
+							Répartition des dons par jour (mois en cours)
+						{% endif %}
+					</p>
+				</div>
+				<form method="get" class="d-flex align-items-center admin-period-form">
+					<label for="period" class="form-label mb-0 me-2 text-light">Période :</label>
+					<select name="period" id="period" class="form-select form-select-sm w-auto">
+						<option value="daily" {% if period == 'daily' %}selected{% endif %}>Journalier</option>
+						<option value="monthly" {% if period == 'monthly' %}selected{% endif %}>Mensuel</option>
+					</select>
+					<button type="submit" class="btn btn-warning btn-sm ms-2">Appliquer</button>
+				</form>
+			</div>
+<!-- Filter : End-->
+
+
+<!-- KPI cards : Start -->
+			<div class="row g-3 admin-kpi-row mb-4">
+				<div class="col-sm-6 col-lg-3">
+					<div class="admin-kpi-card">
+						<div class="admin-kpi-label">Utilisateurs</div>
+						<div class="admin-kpi-value">{{ stats.total_users }}</div>
+						<div class="admin-kpi-sub">Total inscrits</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<div class="admin-kpi-card">
+						<div class="admin-kpi-label">Associations</div>
+						<div class="admin-kpi-value">{{ stats.total_associations }}</div>
+						<div class="admin-kpi-sub">Actives sur Seenedni</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<div class="admin-kpi-card">
+						<div class="admin-kpi-label">Annonces</div>
+						<div class="admin-kpi-value">{{ stats.total_announcements }}</div>
+						<div class="admin-kpi-sub">Collectes créées</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<div class="admin-kpi-card">
+						<div class="admin-kpi-label">Dons</div>
+						<div class="admin-kpi-value">{{ stats.total_donations }}</div>
+						<div class="admin-kpi-sub">Dons enregistrés</div>
+					</div>
+				</div>
+			</div>
+
+	<!-- KPI cards : End -->
+
+			<div class="card shadow-sm border-0 admin-dashboard-card">
+				<div class="card-body">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<h5 class="card-title mb-0">Nombre de dons collectés</h5>
+						<span class="badge bg-warning text-dark">Vue {% if period == 'daily' %}horaire{% else %}mensuelle{% endif %}</span>
+					</div>
+					<div class="admin-chart-wrapper">
+						<canvas id="donationsChart"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</div>
+
+<!-- ******************************************************* JS *******************************************************  -->
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+
+    /*------------------------------- Chart DONATION NUMBER : Start -------------------------------*/
+    
+	const donationLabels = {{ labels|safe }};
+	const donationData = {{ data|safe }};
+
+	const ctx = document.getElementById('donationsChart').getContext('2d');
+	new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: donationLabels,
+			datasets: [{
+				label: 'Nombre de dons',
+				data: donationData,
+				tension: 0.3,
+				fill: true,
+				backgroundColor: 'rgba(252, 211, 77, 0.2)',
+				borderColor: 'rgba(252, 211, 77, 1)',
+				pointBackgroundColor: 'rgba(252, 211, 77, 1)',
+				pointRadius: 3,
+				borderWidth: 2,
+			}]
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			plugins: {
+				legend: {
+					labels: {
+						color: '#e5e7eb'
+					}
+				}
+			},
+			scales: {
+				x: {
+					ticks: {
+						color: '#9ca3af',
+						maxTicksLimit: 12
+					},
+					grid: {
+						color: 'rgba(55, 65, 81, 0.4)'
+					}
+				},
+				y: {
+					beginAtZero: true,
+					ticks: {
+						stepSize: 1,
+						color: '#9ca3af'
+					},
+					grid: {
+						color: 'rgba(55, 65, 81, 0.4)'
+					}
+				}
+			}
+		}
+	});
+
+    /*------------------------------- Chart DONATION NUMBER : End -------------------------------*/
+
+    
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Seenedni - Dossier associations</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="admin-dashboard">
+
+<div class="admin-dashboard-layout">
+    <aside class="admin-sidebar">
+        <div>
+            <div class="admin-sidebar-header mb-4">
+                <span class="admin-sidebar-logo">S</span>
+                <div>
+                    <div class="admin-sidebar-title">Seenedni</div>
+                    <div class="admin-sidebar-subtitle">Espace admin</div>
+                </div>
+            </div>
+            <nav class="admin-sidebar-nav">
+                <a href="{% url 'admin_stats' %}" class="admin-sidebar-link">Statistiques</a>
+                <a href="{% url 'admin_stat_doss_asso' %}" class="admin-sidebar-link active">Dossier associations</a>
+            </nav>
+        </div>
+        <div class="admin-sidebar-footer">
+            <a href="{% url 'index' %}" class="admin-sidebar-btn primary">Aller vers Seenedni</a>
+            <a href="{% url 'logout' %}" class="admin-sidebar-btn secondary">Se déconnecter</a>
+        </div>
+    </aside>
+
+    <main class="admin-dashboard-main">
+        <div class="container py-5 admin-dashboard-container">
+            <div class="admin-dashboard-header mb-4">
+                <h1 class="mb-1 text-white">Associations en attente de vérification</h1>
+                <p class="mb-0 text-light small">Validez ici les nouvelles associations inscrites.</p>
+            </div>
+
+            {% if pending_associations %}
+                <div class="table-responsive">
+                        <div class="table-responsive admin-assos-table-wrapper">
+                            <table class="table table-hover align-middle admin-assos-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Catégorie</th>
+                                <th>Email</th>
+                                <th>Utilisateur lié</th>
+                                <th>Justificatif</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for association in pending_associations %}
+                                <tr>
+                                    <td>{{ association.name }}</td>
+                                    <td>{{ association.get_category_display }}</td>
+                                    <td>{{ association.email }}</td>
+                                    <td>{{ association.user.first_name }} {{ association.user.last_name }} ({{ association.user.email }})</td>
+                                    <td>
+                                        {% if association.receipt %}
+                                            <a href="{{ association.receipt.url }}" target="_blank" title="Ouvrir le justificatif dans un nouvel onglet">
+                                                <img src="{{ association.receipt.url }}" alt="Justificatif" class="img-thumbnail" style="max-width: 140px; max-height: 90px; object-fit: cover;">
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted">Aucun fichier</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="max-width: 260px; white-space: normal;">{{ association.description|truncatechars:120 }}</td>
+                                    <td>
+                                        <form method="post" style="display:inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="association_id" value="{{ association.id }}">
+                                           <button type="submit" class="btn btn-sm btn-success admin-assos-btn">Valider</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-success" role="alert">
+                    Aucune association en attente de vérification.
+                </div>
+            {% endif %}
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
