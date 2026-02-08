@@ -11,7 +11,7 @@
          
         <div class="container-fluid event py-5">
             <div class="container py-5">
-                <h1 class="display-3 mb-5 wow fadeIn" data-wow-delay="0.1s">Événements <span class="text-primary">À Venir</span></h1>
+                <h1 class="display-3 mb-5 wow fadeIn description-text" data-wow-delay="0.1s" tabindex="0">Événements <span class="text-primary">À Venir</span></h1>
 
                 {% if is_association %}
                 <div class="text-center mb-4">
@@ -51,13 +51,13 @@
                             <div class="col-9 col-lg-6 border-start border-dark pb-5">
                                 <div class="ms-3">
                                     <a href="{% url 'events:Details_event' event.id %}" class="text-decoration-none text-dark">
-                                        <h4 class="mb-1">{{ event.title|truncatechars:40 }}</h4>
+                                        <h4 class="mb-1 description-text" tabindex="0">{{ event.title|truncatechars:40 }}</h4>
                                     </a>
                                     <p class="mb-2 text-muted" style="font-size: 0.9rem;">
                                         <i class="fas fa-building me-1"></i>
                                         {{ event.association.name }}
                                     </p>
-                                    <p class="mb-3">{{ event.description }}</p>
+                                    <p class="mb-3 description-text" tabindex="0">{{ event.description }}</p>
                                      <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
                                          <span class="badge bg-primary badge-participants px-3 py-2 me-2" style="font-size: 0.95rem;">
                                             <i class="fa fa-users me-1"></i>
@@ -109,13 +109,13 @@
                         <div class="col-9 col-lg-6 border-start border-dark pb-5">
                             <div class="ms-3">
                                 <a href="{% url 'events:Details_event' event.id %}" class="text-decoration-none text-dark">
-                                    <h4 class="mb-1">{{ event.title }}</h4>
+                                    <h4 class="mb-1 description-text" tabindex="0">{{ event.title }}</h4>
                                 </a>
                                 <p class="mb-2 text-muted" style="font-size: 0.9rem;">
                                     <i class="fas fa-building me-1"></i>
                                     {{ event.association.name }}
                                 </p>
-                                <p class="mb-3">{{ event.description }}</p>
+                                <p class="mb-3 description-text" tabindex="0">{{ event.description }}</p>
                                     <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
                                         <span class="badge bg-primary badge-participants px-3 py-2 me-2" style="font-size: 0.95rem;">
                                         <i class="fa fa-users me-1"></i>

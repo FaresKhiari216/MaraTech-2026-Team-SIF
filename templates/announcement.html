@@ -9,8 +9,8 @@
         <div class="container-fluid sermon py-5">
             <div class="container py-5">
                 <div class="text-center mx-auto mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
-                    <p class="fs-5 text-uppercase text-primary">Cas sociaux</p>
-                    <h1 style ="font-size: 2.75rem;" class="display-3">Trouver quelqu'un dans le besoin</h1>
+                    <p class="fs-5 text-uppercase text-primary description-text" tabindex="0">Cas sociaux</p>
+                    <h1 style ="font-size: 2.75rem;" class="display-3 description-text" tabindex="0">Trouver quelqu'un dans le besoin</h1>
                 </div>
                 
                 {% if is_association %}
@@ -93,8 +93,8 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <a href="{% url 'announcements:Details_Announcement' announcement.id %}" class="d-inline-block h4 lh-sm mb-3">{{ announcement.title|truncatechars:20 }}</a>
-                                    <p class="mb-0">{{ announcement.description|truncatechars:100 }}</p>
+                                    <a href="{% url 'announcements:Details_Announcement' announcement.id %}" class="d-inline-block h4 lh-sm mb-3 description-text" tabindex="0">{{ announcement.title|truncatechars:20 }}</a>
+                                    <p class="mb-0 description-text" tabindex="0">{{ announcement.description|truncatechars:100 }}</p>
                                 </div>
                             </div>
                         </div>
@@ -148,8 +148,8 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <a href="{% url 'announcements:Details_Announcement' announcement.id %}" class="d-inline-block h4 lh-sm mb-3">{{ announcement.title|truncatechars:20 }}</a>
-                                    <p class="mb-0">{{ announcement.description|truncatechars:100 }}</p>
+                                    <a href="{% url 'announcements:Details_Announcement' announcement.id %}" class="d-inline-block h4 lh-sm mb-3 description-text" tabindex="0">{{ announcement.title|truncatechars:20 }}</a>
+                                    <p class="mb-0 description-text" tabindex="0">{{ announcement.description|truncatechars:100 }}</p>
                                 </div>
                             </div>
                         </div>

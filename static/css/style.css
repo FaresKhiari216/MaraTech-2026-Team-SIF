@@ -3,6 +3,28 @@ body {
     padding-top: 70px; /* offset for fixed navbar height */
 }
 
+.skip-link {
+    position: absolute;
+    left: -999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: 10000;
+    background-color: #000;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.skip-link:focus {
+    left: 10px;
+    top: 10px;
+    width: auto;
+    height: auto;
+    outline: 2px solid #F1C152;
+}
+
 :root {
     --bs-yellow: #F1C152;
     --bs-warning: #F1C152;
