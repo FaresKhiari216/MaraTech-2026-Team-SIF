@@ -26,10 +26,13 @@
                 <div class="row justify-content-center mb-4">
                     <div class="col-lg-8 col-md-10">
                         <form method="get" action="{% url 'announcements:search' %}" class="row g-2 align-items-center">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                {{ form.association }}
+                            </div>
+                            <div class="col-md-3">
                                 {{ form.category }}
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 {{ form.keywords }}
                             </div>
                             <div class="col-md-3 d-flex align-items-center gap-2 justify-content-end">

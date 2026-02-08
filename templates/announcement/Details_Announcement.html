@@ -11,7 +11,7 @@
                 <a href="{% url 'announcements:index' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2">
                     &larr; Retour aux annonces
                 </a>
-                {% if is_association %}
+                {% if is_owner %}
                 <div class="d-flex gap-2">
                     <a href="{% url 'announcements:Edit_Announcement' announcement.id %}" class="btn btn-warning rounded-pill px-4 py-2">
                         <i class="fa fa-edit me-2"></i>Éditer l'annonce

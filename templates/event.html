@@ -51,7 +51,7 @@
                             <div class="col-9 col-lg-6 border-start border-dark pb-5">
                                 <div class="ms-3">
                                     <a href="{% url 'events:Details_event' event.id %}" class="text-decoration-none text-dark">
-                                        <h4 class="mb-1">{{ event.title }}</h4>
+                                        <h4 class="mb-1">{{ event.title|truncatechars:40 }}</h4>
                                     </a>
                                     <p class="mb-2 text-muted" style="font-size: 0.9rem;">
                                         <i class="fas fa-building me-1"></i>

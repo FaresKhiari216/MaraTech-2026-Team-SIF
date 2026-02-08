@@ -22,7 +22,7 @@
                     </a>
                     {% endif %}
                 {% endif %}
-                {% if is_association %}
+                {% if is_owner %}
                     <div class="d-flex gap-2">
                         <a href="{% url 'events:edit_event' event.id %}" class="btn btn-warning rounded-pill px-4 py-2">
                             <i class="fa fa-edit me-2"></i>Éditer l'annonce

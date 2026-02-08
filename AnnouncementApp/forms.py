@@ -1,5 +1,6 @@
 from django import forms
 from .models import Announcement
+from UserApp.models import Association
 
 class AnnouncementForm(forms.ModelForm):
     class Meta:
@@ -67,4 +68,11 @@ class AnnouncementSearchForm(forms.Form):
         label="Cas urgent",
         required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+    association = forms.ModelChoiceField(
+        label="Association",
+        queryset=Association.objects.all().order_by("name"),
+        required=False,
+        empty_label="Toutes les associations",
+        widget=forms.Select(attrs={'class': 'form-control'})
     )
