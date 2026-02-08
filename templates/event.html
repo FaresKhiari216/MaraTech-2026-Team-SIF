@@ -1,18 +1,25 @@
 
 {% extends "base.html" %}
+<<<<<<< HEAD
 {% block event_is_active %}active{% endblock event_is_active %}
     {% load static %}
+=======
+{% load static %}
+>>>>>>> 2a46ead207fcd1b8d9e046175dda620d9254876d
 
-        {% block content %}
-        
+{% block event_is_active %}active{% endblock event_is_active %}
 
+<<<<<<< HEAD
          
+=======
+{% block content %}
+>>>>>>> 2a46ead207fcd1b8d9e046175dda620d9254876d
 
         <!-- Events Start -->
          
         <div class="container-fluid event py-5">
             <div class="container py-5">
-                <h1 class="display-3 mb-5 wow fadeIn" data-wow-delay="0.1s">Événements <span class="text-primary">À Venir</span></h1>
+                <h1 class="display-3 mb-5 wow fadeIn description-text" data-wow-delay="0.1s" tabindex="0">Événements <span class="text-primary">À Venir</span></h1>
 
                 {% if is_association or request.user.is_staff %}
                 <div class="text-center mb-4">
@@ -44,24 +51,36 @@
                 {% if search_events %}
                     {% for event in search_events %}
                         <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.{{ forloop.counter }}s">
-                            <div class="col-3 col-lg-2 pe-0">
+                            <!-- Image en premier sur mobile -->
+                            <div class="col-12 col-lg-4 order-1 order-lg-3">
+                                <div class="overflow-hidden mb-3 mb-lg-5">
+                                    {% if event.image %}
+                                        <img src="{{ event.image.url }}" class="img-fluid w-100" alt="{{ event.title }}">
+                                    {% else %}
+                                        <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ event.title }}">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- Bloc dates -->
+                            <div class="col-6 col-md-4 col-lg-2 pe-0 order-2 order-lg-1">
                                 <div class="text-center border-bottom border-dark py-3 px-2">
                                     <h6>Début : {{ event.start_at|date:"d M Y" }}</h6>
                                     <p class="mb-0">Fin : {{ event.finish_at|date:"d M Y" }}</p>
                                 </div>
                             </div>
-                            <div class="col-9 col-lg-6 border-start border-dark pb-5">
+                            <!-- Contenu texte -->
+                            <div class="col-12 col-md-8 col-lg-6 border-lg-start border-dark pb-3 pb-lg-5 order-3 order-lg-2">
                                 <div class="ms-3">
                                     <a href="{% url 'events:Details_event' event.id %}" class="text-decoration-none text-dark">
-                                        <h4 class="mb-1">{{ event.title }}</h4>
+                                        <h4 class="mb-1 description-text" tabindex="0">{{ event.title|truncatechars:40 }}</h4>
                                     </a>
                                     <p class="mb-2 text-muted" style="font-size: 0.9rem;">
                                         <i class="fas fa-building me-1"></i>
                                         {{ event.association.name }}
                                     </p>
-                                    <p class="mb-3">{{ event.description }}</p>
-                                    <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
-                                        <span class="badge bg-primary text-white px-3 py-2 me-2" style="font-size: 0.95rem;">
+                                    <p class="mb-3 description-text" tabindex="0">{{ event.description }}</p>
+                                     <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
+                                         <span class="badge bg-primary badge-participants px-3 py-2 me-2" style="font-size: 0.95rem;">
                                             <i class="fa fa-users me-1"></i>
                                             Participants prévus : {{ event.n_participants }}
                                         </span>
@@ -69,7 +88,7 @@
                                             Statut : {{ event.get_status_display }}
                                         </span>
                                     </div>
-                                    {% if is_normal_user %}
+                                    {% if is_normal_user and event.status != "cancelled" %}
                                     <div class="mt-2">
                                         {% if event.user_joined %}
                                             <a href="{% url 'events:cancel_event' event.id %}" class="btn btn-sm rounded-pill btn-annuler">
@@ -84,15 +103,6 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-4">
-                                <div class="overflow-hidden mb-5">
-                                    {% if event.image %}
-                                        <img src="{{ event.image.url }}" class="img-fluid w-100" alt="{{ event.title }}">
-                                    {% else %}
-                                        <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ event.title }}">
-                                    {% endif %}
-                                </div>
-                            </div>
                         </div>  
                     {% empty %}
                         <div class="col-12 text-center">
@@ -102,24 +112,36 @@
                 {% else %}
                     {% for event in events %}
                     <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.{{ forloop.counter }}s">
-                        <div class="col-3 col-lg-2 pe-0">
+                        <!-- Image en premier sur mobile -->
+                        <div class="col-12 col-lg-4 order-1 order-lg-3">
+                            <div class="overflow-hidden mb-3 mb-lg-5">
+                                {% if event.image %}
+                                    <img src="{{ event.image.url }}" class="img-fluid w-100" alt="{{ event.title }}">
+                                {% else %}
+                                    <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ event.title }}">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- Bloc dates -->
+                        <div class="col-6 col-md-4 col-lg-2 pe-0 order-2 order-lg-1">
                             <div class="text-center border-bottom border-dark py-3 px-2">
                                 <h6>Début : {{ event.start_at|date:"d M Y" }}</h6>
                                 <p class="mb-0">Fin : {{ event.finish_at|date:"d M Y" }}</p>
                             </div>
                         </div>
-                        <div class="col-9 col-lg-6 border-start border-dark pb-5">
+                        <!-- Contenu texte -->
+                        <div class="col-12 col-md-8 col-lg-6 border-lg-start border-dark pb-3 pb-lg-5 order-3 order-lg-2">
                             <div class="ms-3">
                                 <a href="{% url 'events:Details_event' event.id %}" class="text-decoration-none text-dark">
-                                    <h4 class="mb-1">{{ event.title }}</h4>
+                                    <h4 class="mb-1 description-text" tabindex="0">{{ event.title }}</h4>
                                 </a>
                                 <p class="mb-2 text-muted" style="font-size: 0.9rem;">
                                     <i class="fas fa-building me-1"></i>
                                     {{ event.association.name }}
                                 </p>
-                                <p class="mb-3">{{ event.description }}</p>
-                                <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
-                                    <span class="badge bg-primary text-white px-3 py-2 me-2" style="font-size: 0.95rem;">
+                                <p class="mb-3 description-text" tabindex="0">{{ event.description }}</p>
+                                    <div class="mb-2 d-flex flex-wrap align-items-center gap-2">
+                                        <span class="badge bg-primary badge-participants px-3 py-2 me-2" style="font-size: 0.95rem;">
                                         <i class="fa fa-users me-1"></i>
                                         Participants prévus : {{ event.n_participants }}
                                     </span>
@@ -127,7 +149,7 @@
                                         Statut : {{ event.get_status_display }}
                                     </span>
                                 </div>
-                                {% if is_normal_user %}
+                                {% if is_normal_user and event.status != "cancelled" %}
                                 <div class="mt-2">
                                     {% if event.user_joined %}
                                         <a href="{% url 'events:cancel_event' event.id %}" class="btn btn-sm rounded-pill btn-annuler">
@@ -139,15 +161,6 @@
                                         </a>
                                     {% endif %}
                                 </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-4">
-                            <div class="overflow-hidden mb-5">
-                                {% if event.image %}
-                                    <img src="{{ event.image.url }}" class="img-fluid w-100" alt="{{ event.title }}">
-                                {% else %}
-                                    <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ event.title }}">
                                 {% endif %}
                             </div>
                         </div>

@@ -1,6 +1,55 @@
 
+html,
 body {
     padding-top: 70px; /* offset for fixed navbar height */
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.skip-link {
+    position: absolute;
+    left: -999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    z-index: 10000;
+    background-color: #000;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.skip-link:focus {
+    left: 10px;
+    top: 10px;
+    width: auto;
+    height: auto;
+    outline: 2px solid #F1C152;
+}
+
+:root {
+    --bs-yellow: #F1C152;
+    --bs-warning: #F1C152;
+}
+
+/* Dark mode base */
+body.dark-mode {
+    background-color: #121212;
+    color: #f5f5f5;
+}
+
+body.dark-mode a {
+    color: #e0e0e0;
+}
+
+body.dark-mode a:hover {
+    color: #ffffff;
+}
+
+body.dark-mode .text-dark,
+body.dark-mode .text-body {
+    color: #f5f5f5 !important;
 }
 
 /* Admin dashboard layout */
@@ -330,6 +379,11 @@ h4, h5, h6, .h4, .h5, .h6 {
     color: #fff;
 }
 
+.field-error {
+    color: #dc3545;
+    font-size: 0.85rem;
+}
+
 /* Profile dropdown (YouTube-like) */
 .profile-dropdown-menu {
     min-width: 260px;
@@ -349,6 +403,16 @@ h4, h5, h6, .h4, .h5, .h6 {
 
 .profile-menu-item:hover {
     background-color: #f2f2f2;
+}
+
+/* Dark mode profile dropdown */
+body.dark-mode .profile-dropdown-menu {
+    background-color: #2a2a2a;
+    color: #f5f5f5;
+}
+
+body.dark-mode .profile-menu-item:hover {
+    background-color: #3a3a3a;
 }
 
 
@@ -450,7 +514,109 @@ h4, h5, h6, .h4, .h5, .h6 {
     border: 2px solid var(--bs-primary) !important;
     box-shadow: none !important;
 }
+
+/* Dark mode navbar */
+body.dark-mode .navbar {
+    background-color: #1e1e1e !important;
+    border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+
+body.dark-mode .navbar .navbar-nav .nav-link {
+    color: #f5f5f5;
+}
+
+body.dark-mode .navbar .navbar-nav .nav-link:hover,
+body.dark-mode .navbar .navbar-nav .nav-link.active {
+    color: var(--bs-primary);
+}
+
+body.dark-mode .navbar-light .navbar-toggler {
+    background-color: #333;
+    border-color: #555 !important;
+}
+body.dark-mode .navbar-light .navbar-brand,
+body.dark-mode .navbar-light .navbar-brand h2 {
+    color: #f5f5f5;
+}
 /*** Navbar End ***/
+
+
+/* Dark mode sections & cards */
+body.dark-mode .sermon,
+body.dark-mode .event,
+body.dark-mode .footer,
+body.dark-mode .container-fluid,
+body.dark-mode .container {
+    background-color: transparent;
+}
+
+body.dark-mode .card,
+body.dark-mode .sermon-item,
+body.dark-mode .event-item,
+body.dark-mode .dropdown-menu {
+    background-color: #1f1f1f;
+    color: #f5f5f5;
+}
+
+/* Dark mode: event date block (Début / Fin) more readable */
+body.dark-mode .event-item .border-bottom.border-dark {
+    border-color: #555 !important;
+}
+
+body.dark-mode .event-item .border-bottom.border-dark h6,
+body.dark-mode .event-item .border-bottom.border-dark p {
+    color: #f5f5f5;
+}
+
+/* Dark mode titles for cards and sections */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode .h1,
+body.dark-mode .h2,
+body.dark-mode .h3,
+body.dark-mode .h4,
+body.dark-mode .h5,
+body.dark-mode .h6 {
+    color: #fdfdfd;
+}
+
+body.dark-mode .sermon-item a.d-inline-block.h4,
+body.dark-mode .event-item a.text-decoration-none h4 {
+    color: #fdfdfd;
+}
+
+body.dark-mode .sermon-item a.d-inline-block.h4:hover,
+body.dark-mode .event-item a.text-decoration-none h4:hover {
+    color: var(--bs-primary);
+}
+
+body.dark-mode .footer {
+    background-color: #181818;
+    color: #cccccc;
+}
+
+body.dark-mode .footer a {
+    color: #f5f5f5;
+}
+
+body.dark-mode .footer a:hover {
+    color: var(--bs-primary);
+}
+
+/* Dark mode: form containers and helper text */
+body.dark-mode .card-body.bg-white,
+body.dark-mode .card.bg-white {
+    background-color: #1f1f1f !important;
+}
+
+body.dark-mode .text-muted,
+body.dark-mode .form-text {
+    color: #bfbfbf !important;
+}
 
 
 /*** Hero Header ***/
@@ -679,6 +845,97 @@ h4, h5, h6, .h4, .h5, .h6 {
     transition: .5s;
 }
 
+/* Buttons Éditer / Supprimer: darker text for better contrast on colored backgrounds */
+.btn-warning,
+.btn-warning:hover,
+.btn-warning:focus {
+    color: #2b2b2b;
+}
+
+.btn-danger,
+.btn-danger:hover,
+.btn-danger:focus {
+    color: #2b2b2b;
+}
+
+/* Ensure edit buttons stay dark even in dark mode */
+body.dark-mode .btn.btn-warning,
+body.dark-mode .btn.btn-warning:hover,
+body.dark-mode .btn.btn-warning:focus {
+    color: #2b2b2b !important;
+}
+
+/* Form titles & labels darker in light mode */
+body:not(.dark-mode) label,
+body:not(.dark-mode) .form-label {
+    color: #212529;
+    font-weight: 600;
+}
+
+/* Ensure form labels remain readable in dark mode */
+body.dark-mode label,
+body.dark-mode .form-label {
+    color: #f5f5f5;
+}
+
+/* Dark mode buttons: stronger contrast */
+body.dark-mode .btn.btn-outline-secondary,
+body.dark-mode .btn.btn-outline-primary {
+    color: #f5f5f5;
+    border-color: #444;
+    background-color: #1f1f1f;
+}
+
+body.dark-mode .btn.btn-outline-secondary:hover,
+body.dark-mode .btn.btn-outline-primary:hover {
+    background-color: #333;
+    border-color: #555;
+    color: #ffffff;
+}
+
+body.dark-mode .btn.btn-primary {
+    background-color: #F1C152;
+    border-color: #F1C152;
+    color: #000;
+}
+
+body.dark-mode .btn.btn-primary:hover {
+    background-color: #d7a741;
+    border-color: #d7a741;
+    color: #000;
+}
+
+/* Participants prévus: always dark text, even in dark mode */
+.badge-participants,
+.participants-text {
+    color: #2b2b2b;
+}
+
+body.dark-mode .badge-participants,
+body.dark-mode .participants-text {
+    color: #2b2b2b !important;
+}
+
+/* Objectif & catégorie des annonces: texte toujours sombre, même en dark mode */
+.badge-objectif,
+.badge-categorie {
+    color: #2b2b2b !important;
+}
+
+body.dark-mode .badge-objectif,
+body.dark-mode .badge-categorie {
+    color: #2b2b2b !important;
+}
+
+/* Statut de financement (atteint / non atteint) des annonces: texte toujours clair (lisible) */
+.status-financement {
+    color: #ffffff !important;
+}
+
+body.dark-mode .status-financement {
+    color: #ffffff !important;
+}
+
 .testimonial-carousel .owl-nav .owl-prev:hover {
     background: var(--bs-dark) !important;
     color: var(--bs-primary) !important;
@@ -739,3 +996,35 @@ h4, h5, h6, .h4, .h5, .h6 {
     color: #facc15 !important;
 }
 /*** Footer End ***/
+
+
+/* Override Bootstrap yellow backgrounds to unified #F1C152 */
+.bg-warning,
+.alert-warning,
+.list-group-item-warning {
+    background-color: #F1C152 !important;
+}
+
+.btn-warning,
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:active,
+.btn-warning.disabled,
+.btn-warning:disabled,
+.show > .btn-warning.dropdown-toggle {
+    background-color: #F1C152 !important;
+    border-color: #F1C152 !important;
+}
+
+.btn-outline-warning,
+.btn-outline-warning:hover,
+.btn-outline-warning:focus,
+.btn-outline-warning:active,
+.btn-outline-warning.disabled,
+.btn-outline-warning:disabled,
+.show > .btn-outline-warning.dropdown-toggle {
+    background-color: #F1C152 !important;
+    border-color: #F1C152 !important;
+    color: #000;
+}
+

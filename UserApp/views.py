@@ -11,6 +11,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from datetime import date
 import calendar
+from django.db.models import F, Sum, Count
+from django.db.models.functions import TruncMonth
 from .models import User, Association
 from EventApp.models import Event, EventFollow
 from AnnouncementApp.models import Announcement, Donation
@@ -179,21 +181,68 @@ def profile(request):
     stats = {}
 
     if is_association:
-        total_events = Event.objects.filter(association=association).count()
-        total_announcements = Announcement.objects.filter(association=association).count()
-        reached_announcements = Announcement.objects.filter(
-            association=association,
-            current_amount__gte=F("target_amount"),
+        events_qs = Event.objects.filter(association=association)
+        announcements_qs = Announcement.objects.filter(association=association)
+
+        total_events = events_qs.count()
+        total_announcements = announcements_qs.count()
+        reached_announcements = announcements_qs.filter(
+            target_amount_achieved__exact=True,
         ).count()
+
+        # Événements créés par mois (courbe)
+        events_by_month_qs = (
+            events_qs
+            .annotate(month=TruncMonth("created_at"))
+            .values("month")
+            .annotate(count=Count("id"))
+            .order_by("month")
+        )
+
+        events_by_month_labels = [e["month"].strftime("%b %Y") for e in events_by_month_qs]
+        events_by_month_counts = [e["count"] for e in events_by_month_qs]
+
+        # Annonces créées par mois (courbe)
+        announcements_by_month_qs = (
+            announcements_qs
+            .annotate(month=TruncMonth("created_at"))
+            .values("month")
+            .annotate(count=Count("id"))
+            .order_by("month")
+        )
+
+        announcements_by_month_labels = [a["month"].strftime("%b %Y") for a in announcements_by_month_qs]
+        announcements_by_month_counts = [a["count"] for a in announcements_by_month_qs]
+
+        # Annonces financées par catégorie (barplot)
+        category_display = dict(Announcement.CATEGORY_CHOICES)
+        financed_by_category_qs = (
+            announcements_qs
+            .filter(target_amount_achieved__exact=True)
+            .values("category")
+            .annotate(count=Count("id"))
+            .order_by("category")
+        )
+
+        financed_by_category_labels = [category_display.get(a["category"], a["category"]) for a in financed_by_category_qs]
+        financed_by_category_counts = [a["count"] for a in financed_by_category_qs]
 
         stats = {
             "total_events": total_events,
             "total_announcements": total_announcements,
             "reached_announcements": reached_announcements,
+            "events_by_month_labels": events_by_month_labels,
+            "events_by_month_counts": events_by_month_counts,
+            "announcements_by_month_labels": announcements_by_month_labels,
+            "announcements_by_month_counts": announcements_by_month_counts,
+            "financed_by_category_labels": financed_by_category_labels,
+            "financed_by_category_counts": financed_by_category_counts,
         }
     else:
         events_participating = (
-            EventFollow.objects.filter(user=user)
+            EventFollow.objects
+            .filter(user=user)
+            .exclude(event__status="cancelled")
             .select_related("event", "event__association")
             .order_by("-created_at")
         )

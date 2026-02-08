@@ -28,36 +28,57 @@
                         <div class="mb-3">
                             <label class="form-label">Titre de l'évènement</label>
                             {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="field-error">{{ form.title.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Photo</label>
                             {{ form.image }}
+                            {% if form.image.errors %}
+                                <div class="field-error">{{ form.image.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Description</label>
                             {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="field-error">{{ form.description.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Nombre de participants</label>
                             {{ form.n_participants }}
+                            {% if form.n_participants.errors %}
+                                <div class="field-error">{{ form.n_participants.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Date de début</label>
                             {{ form.start_at }}
+                            {% if form.start_at.errors %}
+                                <div class="field-error">{{ form.start_at.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Date de fin</label>
                             {{ form.finish_at }}
+                            {% if form.finish_at.errors %}
+                                <div class="field-error">{{ form.finish_at.errors.0 }}</div>
+                            {% endif %}
                         </div>
                         
                         <div class="mb-4">
                             <label class="form-label">Statut de l'évènement</label>
                             {{ form.status }}
+                            {% if form.status.errors %}
+                                <div class="field-error">{{ form.status.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="d-grid">

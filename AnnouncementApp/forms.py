@@ -1,5 +1,6 @@
 from django import forms
 from .models import Announcement
+from UserApp.models import Association
 
 class AnnouncementForm(forms.ModelForm):
     class Meta:
@@ -12,7 +13,8 @@ class AnnouncementForm(forms.ModelForm):
             'description',
             'emergency',
             'beneficiary',
-            'link'
+            'link',
+            'target_amount_achieved',
         ]
         widgets = {
             'category': forms.Select(attrs={'class': 'form-control'}),
@@ -23,6 +25,30 @@ class AnnouncementForm(forms.ModelForm):
             'emergency': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'beneficiary': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Bénéficiaire'}),
             'link': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Lien cha9a9a.tn'}),
+            'target_amount_achieved': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
+        error_messages = {
+            'category': {
+                'required': "La catégorie est obligatoire.",
+            },
+            'title': {
+                'required': "Le titre de l'annonce est obligatoire.",
+                'max_length': "Le titre est trop long.",
+            },
+            'target_amount': {
+                'required': "Le montant cible est obligatoire.",
+                'invalid': "Veuillez saisir un montant valide.",
+            },
+            'description': {
+                'required': "La description est obligatoire.",
+            },
+            'beneficiary': {
+                'required': "Le nom du bénéficiaire est obligatoire.",
+            },
+            'link': {
+                'required': "Le lien de vérification est obligatoire.",
+                'invalid': "Veuillez saisir une URL valide.",
+            },
         }
 
 class AnnouncementSearchForm(forms.Form):
@@ -42,4 +68,11 @@ class AnnouncementSearchForm(forms.Form):
         label="Cas urgent",
         required=False,
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'})
+    )
+    association = forms.ModelChoiceField(
+        label="Association",
+        queryset=Association.objects.all().order_by("name"),
+        required=False,
+        empty_label="Toutes les associations",
+        widget=forms.Select(attrs={'class': 'form-control'})
     )

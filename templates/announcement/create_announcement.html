@@ -27,37 +27,58 @@
                         <div class="mb-3">
                             <label class="form-label">Catégorie</label>
                             {{ form.category }}
+                            {% if form.category.errors %}
+                                <div class="field-error">{{ form.category.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Titre de l'annonce</label>
                             {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="field-error">{{ form.title.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Photo</label>
                             {{ form.photo }}
+                            {% if form.photo.errors %}
+                                <div class="field-error">{{ form.photo.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-bold text-primary">Montant plafond à atteindre</label>
                             {{ form.target_amount }}
                             <small class="form-text text-muted">Indiquez l'objectif financier à atteindre pour ce cas social.</small>
+                            {% if form.target_amount.errors %}
+                                <div class="field-error">{{ form.target_amount.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Description</label>
                             {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="field-error">{{ form.description.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Bénéficiaire</label>
                             {{ form.beneficiary }}
+                            {% if form.beneficiary.errors %}
+                                <div class="field-error">{{ form.beneficiary.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Lien de vérification (cha9a9a.tn)</label>
                             {{ form.link }}
+                            {% if form.link.errors %}
+                                <div class="field-error">{{ form.link.errors.0 }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="form-check mb-4">

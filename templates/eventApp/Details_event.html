@@ -11,7 +11,7 @@
                 <a href="{% url 'events:index' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2">
                     &larr; Retour aux évènements
                 </a>
-                {% if is_normal_user %}
+                {% if is_normal_user and event.status != "cancelled" %}
                     {% if has_joined %}
                     <a href="{% url 'events:cancel_event' event.id %}" class="btn rounded-pill px-4 py-2 btn-annuler">
                         Annuler
@@ -22,7 +22,11 @@
                     </a>
                     {% endif %}
                 {% endif %}
+<<<<<<< HEAD
                 {% if is_association or request.user.is_staff %}
+=======
+                {% if is_owner %}
+>>>>>>> 2a46ead207fcd1b8d9e046175dda620d9254876d
                     <div class="d-flex gap-2">
                         <a href="{% url 'events:edit_event' event.id %}" class="btn btn-warning rounded-pill px-4 py-2">
                             <i class="fa fa-edit me-2"></i>Éditer l'annonce
@@ -61,17 +65,17 @@
                                 </div>
                             </div>
 
-                            <h1 class="h3 mb-3">{{ event.title }}</h1>
+                            <h1 class="h3 mb-3 description-text" tabindex="0">{{ event.title }}</h1>
 
-                            <p class="mb-2 text-muted">
+                            <p class="mb-2 participants-text">
                                 <i class="fa fa-users me-2"></i>
                                 Participants prévus : {{ event.n_participants }}
                             </p>
 
                             <hr>
 
-                            <h2 class="h5 mb-3">Description</h2>
-                            <p class="mb-4" style="white-space: pre-line; word-wrap: break-word; overflow-wrap: break-word; line-height: 1.7; font-size: 0.98rem;">
+                            <h2 class="h5 mb-3 description-text" tabindex="0">Description</h2>
+                            <p class="mb-4 description-text" tabindex="0" style="white-space: pre-line; word-wrap: break-word; overflow-wrap: break-word; line-height: 1.7; font-size: 0.98rem;">
                                 {{ event.description }}
                             </p>
                         </div>

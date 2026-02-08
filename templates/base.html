@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
     <head>
         <meta charset="utf-8">
@@ -30,6 +30,7 @@
     </head>
 
     <body>
+        <a href="#main-content" class="skip-link">Passer au contenu principal</a>
         <!-- Topbar start -->
         <div class="container-fluid fixed-top px-0">
             <div class="container-fluid px-0">
@@ -37,7 +38,7 @@
                     <a href="index.html" class="navbar-brand py-0">
                         <h2 style ="margin-left: 50px" class="mb-0 fw-bold">Seenedni</h2>
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Basculer la navigation">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
@@ -55,7 +56,24 @@
                             </div>
                            
                         </div>
+                        <!-- Dark mode toggle -->
+                        <div class="d-none d-xl-flex align-items-center me-3">
+                            <div class="form-check form-switch mb-0">
+                                <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                                <label class="form-check-label small ms-1" for="darkModeToggle">Dark</label>
+                            </div>
+                        </div>
+
+                        <!-- Text-to-speech toggle -->
+                        <div class="d-none d-xl-flex align-items-center me-3">
+                            <div class="form-check form-switch mb-0">
+                                <input class="form-check-input" type="checkbox" id="ttsToggle" aria-pressed="false">
+                                <label class="form-check-label small ms-1" for="ttsToggle">Lecture</label>
+                            </div>
+                        </div>
+
                         {% if request.user.is_authenticated %}
+                            <!-- Profil pour écrans larges -->
                             <div class="dropdown d-none d-xl-block me-3">
                                 <button class="btn p-0 border-0 bg-transparent d-flex flex-column align-items-center" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="rounded-circle overflow-hidden" style="width: 40px; height: 40px;">
@@ -92,8 +110,21 @@
                                     </form>
                                 </div>
                             </div>
+                            <!-- Liens profil pour mobile/tablette -->
+                            <div class="navbar-nav ms-3 d-xl-none">
+                                <a href="{% url 'profile' %}" class="nav-item nav-link">
+                                    <i class="fas fa-user-circle me-1"></i> Profil
+                                </a>
+                                <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="nav-link btn btn-link p-0 text-start">
+                                        <i class="fas fa-sign-out-alt me-1"></i> Se déconnecter
+                                    </button>
+                                </form>
+                            </div>
                         {% else %}
                             <a style="margin-right: 20px" href="{% url 'login' %}" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block">Se connecter</a>
+                            <a href="{% url 'login' %}" class="nav-link d-xl-none ms-3">Se connecter</a>
                         {% endif %}
                     </div>
                 </nav>
@@ -111,7 +142,9 @@
             </div>
         {% endif %}
 
-        {% block content %}  {% endblock content %}
+        <main id="main-content" tabindex="-1">
+            {% block content %}  {% endblock content %}
+        </main>
         
          <!-- Footer Start -->
         <div class="container-fluid footer pt-5 wow fadeIn" data-wow-delay="0.1s">
@@ -134,7 +167,7 @@
         <!-- Footer End -->
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-primary border-3 border-light back-to-top"><i class="fa fa-arrow-up"></i> </a>   
+        <a href="#" class="btn btn-primary border-3 border-light back-to-top" aria-label="Revenir en haut de la page" role="button"><i class="fa fa-arrow-up"></i> </a>   
         
         
         

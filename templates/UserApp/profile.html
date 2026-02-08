@@ -47,6 +47,38 @@
                             <p class="display-6 mb-0">{{ stats.reached_announcements }}</p>
                         </div>
                     </div>
+
+                    {% if stats.events_by_month_labels %}
+                    <hr>
+                    <div class="mt-3">
+                        <h5 class="mb-3">Événements créés par mois</h5>
+                        <canvas id="eventsByMonthChart" height="120" aria-label="Courbe des événements créés par mois" role="img"></canvas>
+                    </div>
+                    {% endif %}
+
+                    {% if stats.announcements_by_month_labels %}
+                    <hr>
+                    <div class="mt-4">
+                        <h5 class="mb-3">Annonces créées par mois</h5>
+                        <canvas id="announcementsByMonthChart" height="120" aria-label="Courbe des annonces créées par mois" role="img"></canvas>
+                    </div>
+                    {% endif %}
+                    
+                    {% if stats.total_announcements or stats.reached_announcements %}
+                    <hr>
+                    <div class="mt-4">
+                        <h5 class="mb-3">Répartition des annonces (totales vs financées)</h5>
+                        <canvas id="announcementsBarChart" height="120" aria-label="Nombre total d'annonces et annonces financées" role="img"></canvas>
+                    </div>
+                    {% endif %}
+
+                    {% if stats.financed_by_category_labels %}
+                    <hr>
+                    <div class="mt-4">
+                        <h5 class="mb-3">Annonces financées par catégorie</h5>
+                        <canvas id="financedByCategoryChart" height="120" aria-label="Annonces financées par catégorie" role="img"></canvas>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
 
@@ -83,4 +115,187 @@
         </div>
     </div>
 </div>
+
+{% if is_association %}
+    <!-- Chart.js pour les courbes et barplots du profil association -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        (function() {
+            // Courbe des événements créés par mois
+            const eventsCtx = document.getElementById('eventsByMonthChart');
+            if (eventsCtx && {{ stats.events_by_month_labels|length|default:0 }} > 0) {
+                const eventLabels = [{% for label in stats.events_by_month_labels %}"{{ label }}"{% if not forloop.last %}, {% endif %}{% endfor %}];
+                const eventData = [{% for value in stats.events_by_month_counts %}{{ value }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+
+                new Chart(eventsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: eventLabels,
+                        datasets: [{
+                            label: 'Événements créés',
+                            data: eventData,
+                            borderColor: '#F1C152',
+                            backgroundColor: 'rgba(241, 193, 82, 0.2)',
+                            tension: 0.3,
+                            fill: true,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#F1C152',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.parsed.y || 0;
+                                        return 'Événements : ' + value;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { title: { display: true, text: 'Mois' } },
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: "Nombre d'événements" },
+                                ticks: { precision: 0 }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Courbe des annonces créées par mois
+            const announcementsCtx = document.getElementById('announcementsByMonthChart');
+            if (announcementsCtx && {{ stats.announcements_by_month_labels|length|default:0 }} > 0) {
+                const announcementLabels = [{% for label in stats.announcements_by_month_labels %}"{{ label }}"{% if not forloop.last %}, {% endif %}{% endfor %}];
+                const announcementData = [{% for value in stats.announcements_by_month_counts %}{{ value }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+
+                new Chart(announcementsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: announcementLabels,
+                        datasets: [{
+                            label: 'Annonces créées',
+                            data: announcementData,
+                            borderColor: '#4e79a7',
+                            backgroundColor: 'rgba(78, 121, 167, 0.2)',
+                            tension: 0.3,
+                            fill: true,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#4e79a7',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.parsed.y || 0;
+                                        return 'Annonces : ' + value;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { title: { display: true, text: 'Mois' } },
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: "Nombre d'annonces" },
+                                ticks: { precision: 0 }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Barplot annonces totales vs annonces financées
+            const barCtx = document.getElementById('announcementsBarChart');
+            if (barCtx) {
+                const total = {{ stats.total_announcements|default:0 }};
+                const reached = {{ stats.reached_announcements|default:0 }};
+                if (total > 0 || reached > 0) {
+                    new Chart(barCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Annonces totales', 'Annonces financées'],
+                            datasets: [{
+                                data: [total, reached],
+                                backgroundColor: ['#F1C152', '#4caf50'],
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const value = context.parsed.y || 0;
+                                            return context.label + ' : ' + value;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: { title: { display: false } },
+                                y: {
+                                    beginAtZero: true,
+                                    title: { display: true, text: "Nombre d'annonces" },
+                                    ticks: { precision: 0 }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Barplot annonces financées par catégorie
+            const financedCatCtx = document.getElementById('financedByCategoryChart');
+            if (financedCatCtx && {{ stats.financed_by_category_labels|length|default:0 }} > 0) {
+                const catLabels = [{% for label in stats.financed_by_category_labels %}"{{ label }}"{% if not forloop.last %}, {% endif %}{% endfor %}];
+                const catData = [{% for value in stats.financed_by_category_counts %}{{ value }}{% if not forloop.last %}, {% endif %}{% endfor %}];
+
+                new Chart(financedCatCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: catLabels,
+                        datasets: [{
+                            data: catData,
+                            backgroundColor: ['#4caf50', '#2196f3', '#ff9800', '#9c27b0', '#03a9f4'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const value = context.parsed.y || 0;
+                                        return context.label + ' : ' + value;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: { display: true, text: 'Catégories' }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: { display: true, text: "Nombre d'annonces financées" },
+                                ticks: { precision: 0 }
+                            }
+                        }
+                    }
+                });
+            }
+        })();
+    </script>
+{% endif %}
 {% endblock content %}
