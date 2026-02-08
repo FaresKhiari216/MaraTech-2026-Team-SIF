@@ -3,11 +3,11 @@ from UserApp.models import User, Association
 
 class Announcement(models.Model):
     CATEGORY_CHOICES = [
-        ("handicap", "إعاقة"),
-        ("maladies", "أمراض"),
-        ("enfants", "أطفال"),
-        ("education", "تعليم"),
-        ("renovation", "ترميم"),
+        ("handicap", "Handicap"),
+        ("maladies", "Maladies"),
+        ("enfants", "Enfants"),
+        ("education", "Education"),
+        ("renovation", "Renovation"),
     ]
 
     category = models.CharField(

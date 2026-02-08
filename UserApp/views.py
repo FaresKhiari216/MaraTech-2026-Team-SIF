@@ -116,7 +116,9 @@ def profile(request):
         }
     else:
         events_participating = (
-            EventFollow.objects.filter(user=user)
+            EventFollow.objects
+            .filter(user=user)
+            .exclude(event__status="cancelled")
             .select_related("event", "event__association")
             .order_by("-created_at")
         )

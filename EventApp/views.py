@@ -100,6 +100,10 @@ def join_event(request, event_id):
         return redirect("events:index")
 
     event = Event.objects.get(pk=event_id)
+
+    if event.status == "cancelled":
+        return redirect("events:Details_event", event_id=event.id)
+
     EventFollow.objects.get_or_create(user=request.user, event=event)
     return redirect("events:Details_event", event_id=event.id)
 
@@ -137,6 +141,7 @@ def create_event(request):
 @login_required
 def edit_event(request, event_id):
     event = Event.objects.get(pk=event_id)
+    old_status = event.status
 
     # Vérifier que l'utilisateur est bien l'association créatrice de l'évènement
     association = Association.objects.filter(user=request.user).first()
@@ -146,7 +151,10 @@ def edit_event(request, event_id):
     if request.method == "POST":
         form = EventForm(request.POST, request.FILES, instance=event)
         if form.is_valid():
-            form.save()
+            updated_event = form.save()
+            # Si l'évènement vient d'être annulé, supprimer toutes les participations
+            if old_status != "cancelled" and updated_event.status == "cancelled":
+                EventFollow.objects.filter(event=updated_event).delete()
             return redirect("events:Details_event", event_id=event.id)
     else:
         form = EventForm(instance=event)

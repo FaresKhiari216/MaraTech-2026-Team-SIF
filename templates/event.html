@@ -67,7 +67,7 @@
                                             Statut : {{ event.get_status_display }}
                                         </span>
                                     </div>
-                                    {% if is_normal_user %}
+                                    {% if is_normal_user and event.status != "cancelled" %}
                                     <div class="mt-2">
                                         {% if event.user_joined %}
                                             <a href="{% url 'events:cancel_event' event.id %}" class="btn btn-sm rounded-pill btn-annuler">
@@ -125,7 +125,7 @@
                                         Statut : {{ event.get_status_display }}
                                     </span>
                                 </div>
-                                {% if is_normal_user %}
+                                {% if is_normal_user and event.status != "cancelled" %}
                                 <div class="mt-2">
                                     {% if event.user_joined %}
                                         <a href="{% url 'events:cancel_event' event.id %}" class="btn btn-sm rounded-pill btn-annuler">

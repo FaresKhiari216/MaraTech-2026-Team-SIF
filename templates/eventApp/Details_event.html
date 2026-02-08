@@ -11,7 +11,7 @@
                 <a href="{% url 'events:index' %}" class="btn btn-outline-secondary rounded-pill px-4 py-2">
                     &larr; Retour aux évènements
                 </a>
-                {% if is_normal_user %}
+                {% if is_normal_user and event.status != "cancelled" %}
                     {% if has_joined %}
                     <a href="{% url 'events:cancel_event' event.id %}" class="btn rounded-pill px-4 py-2 btn-annuler">
                         Annuler

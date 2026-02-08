@@ -3,9 +3,9 @@ from django.conf import settings
 from UserApp.models import Association
 
 STATUS_CHOICES = [
-        ("upcoming", "مُقْبِل"),
-        ("finished", "اِنْتَهَى"),
-        ("cancelled", "ألغت"),
+        ("upcoming", "Bientôt"),
+        ("finished", "Terminé"),
+        ("cancelled", "Annulé"),
 ]
 
 class Event(models.Model):
@@ -25,7 +25,7 @@ class Event(models.Model):
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
-        default="À venir"
+        default="Bientôt"
     )
 
     image = models.ImageField(
