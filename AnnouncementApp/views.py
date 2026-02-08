@@ -57,11 +57,17 @@ def search_announcements(request):
 
 @login_required
 def new_announcement(request):
+    # Seules les associations et l'administrateur peuvent créer des annonces
+    is_association_user = Association.objects.filter(user=request.user).exists()
+    if not (is_association_user or request.user.is_staff):
+        return redirect('announcements:index')
+
+    association = Association.objects.filter(user=request.user).first()
+
     if request.method == 'POST':
         form = AnnouncementForm(request.POST, request.FILES)
         if form.is_valid():
             annoucement = form.save(commit=False)
-            association = Association.objects.filter(user=request.user).first()
             if association:
                 annoucement.association = association
             annoucement.save()
@@ -98,9 +104,11 @@ def edit_announcement(request, announcement_id):
     announcement = Announcement.objects.get(pk=announcement_id)
 
     # Vérifier que l'utilisateur est bien l'association créatrice de l'annonce
-    association = Association.objects.filter(user=request.user).first()
-    if association is None or announcement.association != association:
-        return redirect("announcements:index")
+    # ou un administrateur
+    if not request.user.is_staff:
+        association = Association.objects.filter(user=request.user).first()
+        if association is None or announcement.association != association:
+            return redirect("announcements:index")
 
     if request.method == "POST":
         form = AnnouncementForm(request.POST, request.FILES, instance=announcement)
@@ -117,9 +125,11 @@ def delete_announcement(request, announcement_id):
     announcement = Announcement.objects.get(pk = announcement_id)
 
     # Vérifier que l'utilisateur est bien l'association créatrice de l'annonce
-    association = Association.objects.filter(user=request.user).first()
-    if association is None or announcement.association != association:
-        return redirect('announcements:index')
+    # ou un administrateur
+    if not request.user.is_staff:
+        association = Association.objects.filter(user=request.user).first()
+        if association is None or announcement.association != association:
+            return redirect('announcements:index')
 
     announcement.delete()
     return redirect('announcements:index')

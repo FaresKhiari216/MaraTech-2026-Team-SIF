@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block content %}
+
 {% block event_is_active %}active{% endblock event_is_active %}
+{% block content %}
 
 <div class="container py-5" style="margin-top: 100px;">
     <div class="row justify-content-center">
@@ -22,11 +23,7 @@
                     </a>
                     {% endif %}
                 {% endif %}
-<<<<<<< HEAD
-                {% if is_association or request.user.is_staff %}
-=======
-                {% if is_owner %}
->>>>>>> 2a46ead207fcd1b8d9e046175dda620d9254876d
+                {% if is_owner or request.user.is_staff %}
                     <div class="d-flex gap-2">
                         <a href="{% url 'events:edit_event' event.id %}" class="btn btn-warning rounded-pill px-4 py-2">
                             <i class="fa fa-edit me-2"></i>Éditer l'annonce

@@ -16,6 +16,9 @@ def _is_association_user(user):
 def _is_normal_user(user):
     if not user.is_authenticated:
         return False
+    # Un utilisateur "normal" ne doit être ni une association ni un administrateur
+    if user.is_staff or getattr(user, "is_superuser", False):
+        return False
     return not _is_association_user(user)
 
 
@@ -119,18 +122,22 @@ def cancel_event(request, event_id):
 
 @login_required
 def create_event(request):
-    if not _is_association_user(request.user):
+    # Seules les associations et l'administrateur peuvent créer des évènements
+    is_association = _is_association_user(request.user)
+    if not (is_association or request.user.is_staff):
         return redirect("events:index")
 
-    association = Association.objects.filter(user=request.user).first()
-    if association is None:
-        return redirect("events:index")
+    association = None
+    if is_association:
+        association = Association.objects.filter(user=request.user).first()
 
     if request.method == "POST":
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
             event = form.save(commit=False)
-            event.association = association
+            # Si c'est une association, rattacher l'évènement à son association
+            if association is not None:
+                event.association = association
             event.save()
             return redirect("events:index")
     else:
@@ -144,9 +151,11 @@ def edit_event(request, event_id):
     old_status = event.status
 
     # Vérifier que l'utilisateur est bien l'association créatrice de l'évènement
-    association = Association.objects.filter(user=request.user).first()
-    if association is None or event.association != association:
-        return redirect("events:index")
+    # ou un administrateur
+    if not request.user.is_staff:
+        association = Association.objects.filter(user=request.user).first()
+        if association is None or event.association != association:
+            return redirect("events:index")
 
     if request.method == "POST":
         form = EventForm(request.POST, request.FILES, instance=event)
@@ -166,9 +175,11 @@ def delete_event(request, event_id):
     event = Event.objects.get(pk=event_id)
 
     # Vérifier que l'utilisateur est bien l'association créatrice de l'évènement
-    association = Association.objects.filter(user=request.user).first()
-    if association is None or event.association != association:
-        return redirect("events:index")
+    # ou un administrateur
+    if not request.user.is_staff:
+        association = Association.objects.filter(user=request.user).first()
+        if association is None or event.association != association:
+            return redirect("events:index")
 
     event.delete()
     return redirect("events:index")
