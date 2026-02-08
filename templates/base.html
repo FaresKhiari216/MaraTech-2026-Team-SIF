@@ -69,6 +69,7 @@
                         </div>
 
                         {% if request.user.is_authenticated %}
+                            <!-- Profil pour écrans larges -->
                             <div class="dropdown d-none d-xl-block me-3">
                                 <button class="btn p-0 border-0 bg-transparent d-flex flex-column align-items-center" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="rounded-circle overflow-hidden" style="width: 40px; height: 40px;">
@@ -105,8 +106,21 @@
                                     </form>
                                 </div>
                             </div>
+                            <!-- Liens profil pour mobile/tablette -->
+                            <div class="navbar-nav ms-3 d-xl-none">
+                                <a href="{% url 'profile' %}" class="nav-item nav-link">
+                                    <i class="fas fa-user-circle me-1"></i> Profil
+                                </a>
+                                <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="nav-link btn btn-link p-0 text-start">
+                                        <i class="fas fa-sign-out-alt me-1"></i> Se déconnecter
+                                    </button>
+                                </form>
+                            </div>
                         {% else %}
                             <a style="margin-right: 20px" href="{% url 'login' %}" class="btn btn-primary py-2 px-4 d-none d-xl-inline-block">Se connecter</a>
+                            <a href="{% url 'login' %}" class="nav-link d-xl-none ms-3">Se connecter</a>
                         {% endif %}
                     </div>
                 </nav>

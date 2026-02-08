@@ -144,7 +144,18 @@
     function getElementTextForTts($el) {
         const dataText = $el.data('tts');
         const ariaLabel = $el.attr('aria-label');
+        const placeholder = $el.attr('placeholder');
         const visibleText = $el.text();
+
+        // Si c'est un champ de saisie, prioriser le placeholder avec un préfixe dédié
+        const tag = ($el.prop('tagName') || '').toLowerCase();
+        if ((tag === 'input' || tag === 'textarea') && placeholder) {
+            const cleanedPlaceholder = placeholder.replace(/\s+/g, ' ').trim();
+            if (cleanedPlaceholder) {
+                return 'espace de saisi - ' + cleanedPlaceholder;
+            }
+        }
+
         const raw = dataText || ariaLabel || visibleText;
         if (!raw) return '';
         return raw.replace(/\s+/g, ' ').trim();
@@ -178,8 +189,8 @@
             }
         });
 
-        // Read on keyboard focus for interactive elements and description texts
-        $(document).on('focusin', 'button, [role="button"], a.btn, .btn, a.nav-link, label, [data-tts], .description-text', function () {
+        // Read on keyboard focus for interactive elements, champs de saisie et description texts
+        $(document).on('focusin', 'button, [role="button"], a.btn, .btn, a.nav-link, label, [data-tts], input, textarea, select, .description-text', function () {
             if (!isTtsEnabled()) return;
             const $el = $(this);
             const text = getElementTextForTts($el);

@@ -1,6 +1,9 @@
 
+html,
 body {
     padding-top: 70px; /* offset for fixed navbar height */
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .skip-link {

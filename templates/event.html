@@ -1,11 +1,10 @@
 
 {% extends "base.html" %}
-    {% load static %}
+{% load static %}
 
-        {% block content %}
-        
+{% block event_is_active %}active{% endblock event_is_active %}
 
-         {% block event_is_active %}active{% endblock event_is_active %}
+{% block content %}
 
         <!-- Events Start -->
          
@@ -42,13 +41,25 @@
                 {% if search_events %}
                     {% for event in search_events %}
                         <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.{{ forloop.counter }}s">
-                            <div class="col-3 col-lg-2 pe-0">
+                            <!-- Image en premier sur mobile -->
+                            <div class="col-12 col-lg-4 order-1 order-lg-3">
+                                <div class="overflow-hidden mb-3 mb-lg-5">
+                                    {% if event.image %}
+                                        <img src="{{ event.image.url }}" class="img-fluid w-100" alt="{{ event.title }}">
+                                    {% else %}
+                                        <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ event.title }}">
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- Bloc dates -->
+                            <div class="col-6 col-md-4 col-lg-2 pe-0 order-2 order-lg-1">
                                 <div class="text-center border-bottom border-dark py-3 px-2">
                                     <h6>Début : {{ event.start_at|date:"d M Y" }}</h6>
                                     <p class="mb-0">Fin : {{ event.finish_at|date:"d M Y" }}</p>
                                 </div>
                             </div>
-                            <div class="col-9 col-lg-6 border-start border-dark pb-5">
+                            <!-- Contenu texte -->
+                            <div class="col-12 col-md-8 col-lg-6 border-lg-start border-dark pb-3 pb-lg-5 order-3 order-lg-2">
                                 <div class="ms-3">
                                     <a href="{% url 'events:Details_event' event.id %}" class="text-decoration-none text-dark">
                                         <h4 class="mb-1 description-text" tabindex="0">{{ event.title|truncatechars:40 }}</h4>
@@ -82,15 +93,6 @@
                                     {% endif %}
                                 </div>
                             </div>
-                            <div class="col-12 col-lg-4">
-                                <div class="overflow-hidden mb-5">
-                                    {% if event.image %}
-                                        <img src="{{ event.image.url }}" class="img-fluid w-100" alt="{{ event.title }}">
-                                    {% else %}
-                                        <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ event.title }}">
-                                    {% endif %}
-                                </div>
-                            </div>
                         </div>  
                     {% empty %}
                         <div class="col-12 text-center">
@@ -100,13 +102,25 @@
                 {% else %}
                     {% for event in events %}
                     <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.{{ forloop.counter }}s">
-                        <div class="col-3 col-lg-2 pe-0">
+                        <!-- Image en premier sur mobile -->
+                        <div class="col-12 col-lg-4 order-1 order-lg-3">
+                            <div class="overflow-hidden mb-3 mb-lg-5">
+                                {% if event.image %}
+                                    <img src="{{ event.image.url }}" class="img-fluid w-100" alt="{{ event.title }}">
+                                {% else %}
+                                    <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ event.title }}">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- Bloc dates -->
+                        <div class="col-6 col-md-4 col-lg-2 pe-0 order-2 order-lg-1">
                             <div class="text-center border-bottom border-dark py-3 px-2">
                                 <h6>Début : {{ event.start_at|date:"d M Y" }}</h6>
                                 <p class="mb-0">Fin : {{ event.finish_at|date:"d M Y" }}</p>
                             </div>
                         </div>
-                        <div class="col-9 col-lg-6 border-start border-dark pb-5">
+                        <!-- Contenu texte -->
+                        <div class="col-12 col-md-8 col-lg-6 border-lg-start border-dark pb-3 pb-lg-5 order-3 order-lg-2">
                             <div class="ms-3">
                                 <a href="{% url 'events:Details_event' event.id %}" class="text-decoration-none text-dark">
                                     <h4 class="mb-1 description-text" tabindex="0">{{ event.title }}</h4>
@@ -137,15 +151,6 @@
                                         </a>
                                     {% endif %}
                                 </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-4">
-                            <div class="overflow-hidden mb-5">
-                                {% if event.image %}
-                                    <img src="{{ event.image.url }}" class="img-fluid w-100" alt="{{ event.title }}">
-                                {% else %}
-                                    <img src="{% static 'img/test.jpg' %}" class="img-fluid w-100" alt="{{ event.title }}">
                                 {% endif %}
                             </div>
                         </div>
