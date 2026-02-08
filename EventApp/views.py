@@ -45,8 +45,11 @@ def search_events(request):
 
     if form.is_valid():
         query = form.cleaned_data.get("keywords")
+        association = form.cleaned_data.get("association")
         if query:
             events = events.filter(title__icontains=query) | events.filter(description__icontains=query)
+        if association:
+            events = events.filter(association=association)
 
     if request.user.is_authenticated:
         events = events.annotate(
@@ -90,7 +93,7 @@ def join_event(request, event_id):
 
     event = Event.objects.get(pk=event_id)
     EventFollow.objects.get_or_create(user=request.user, event=event)
-    return redirect("events:index", event_id=event.id)
+    return redirect("events:Details_event", event_id=event.id)
 
 
 def cancel_event(request, event_id):
