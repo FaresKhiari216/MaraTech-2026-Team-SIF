@@ -73,6 +73,14 @@
                                                 <i class="fa fa-eye me-2 text-muted"></i>
                                                 {{ announcement.views }} vues
                                             </small>
+                                            <br>
+                                            <small>
+                                                {% if announcement.target_amount_achieved %}
+                                                    <span class="text-success">atteint</span>
+                                                {% else %}
+                                                    <span class="text-danger">non atteint</span>
+                                                {% endif %}
+                                            </small>
                                         </div>
                                         <div class="text-end">
                                             <span class="badge bg-primary text-white mb-1">Objectif : {{ announcement.target_amount }}&nbsp;DT</span><br>
@@ -119,6 +127,14 @@
                                             <small>
                                                 <i class="fa fa-eye me-2 text-muted"></i>
                                                 {{ announcement.views }} vues
+                                            </small>
+                                            <br>
+                                            <small>
+                                                {% if announcement.target_amount_achieved %}
+                                                    <span class="text-success">atteint</span>
+                                                {% else %}
+                                                    <span class="text-danger">non atteint</span>
+                                                {% endif %}
                                             </small>
                                         </div>
                                         <div class="text-end">

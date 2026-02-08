@@ -128,6 +128,11 @@ h4, h5, h6, .h4, .h5, .h6 {
     color: #fff;
 }
 
+.field-error {
+    color: #dc3545;
+    font-size: 0.85rem;
+}
+
 /* Profile dropdown (YouTube-like) */
 .profile-dropdown-menu {
     min-width: 260px;

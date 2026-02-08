@@ -106,7 +106,7 @@ def profile(request):
         total_announcements = Announcement.objects.filter(association=association).count()
         reached_announcements = Announcement.objects.filter(
             association=association,
-            current_amount__gte=F("target_amount"),
+            target_amount_achieved__exact=True,
         ).count()
 
         stats = {
