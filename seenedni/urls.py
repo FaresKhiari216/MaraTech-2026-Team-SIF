@@ -27,6 +27,7 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('register/', register, name='register'),
     path('logout/', logout, name='logout'),
+    path('profile/', profile, name='profile'),
     path('announcement/', include('AnnouncementApp.urls')),
     path('event/', include('EventApp.urls', namespace='events')),
 ]

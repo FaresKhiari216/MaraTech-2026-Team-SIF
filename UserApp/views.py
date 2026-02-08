@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.contrib.auth.decorators import login_required
+from django.db.models import F, Sum
 from .models import User, Association
+from EventApp.models import Event, EventFollow
+from AnnouncementApp.models import Announcement
 
 
 def login(request):
@@ -85,3 +89,43 @@ def login(request ) :
             error = "Email ou mot de passe incorrect."
             return render(request, 'UserApp/login.html', {'error': error})
     return render(request, 'UserApp/login.html')
+
+
+@login_required
+def profile(request):
+    user = request.user
+
+    association = Association.objects.filter(user=user).first()
+    is_association = association is not None
+
+    events_participating = []
+    stats = {}
+
+    if is_association:
+        total_events = Event.objects.filter(association=association).count()
+        total_announcements = Announcement.objects.filter(association=association).count()
+        reached_announcements = Announcement.objects.filter(
+            association=association,
+            current_amount__gte=F("target_amount"),
+        ).count()
+
+        stats = {
+            "total_events": total_events,
+            "total_announcements": total_announcements,
+            "reached_announcements": reached_announcements,
+        }
+    else:
+        events_participating = (
+            EventFollow.objects.filter(user=user)
+            .select_related("event", "event__association")
+            .order_by("-created_at")
+        )
+
+    context = {
+        "user_obj": user,
+        "association": association,
+        "is_association": is_association,
+        "events_participating": events_participating,
+        "stats": stats,
+    }
+    return render(request, "UserApp/profile.html", context)

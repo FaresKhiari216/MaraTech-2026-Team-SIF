@@ -1,6 +1,5 @@
 from django.db import models
-from UserApp.models import User
-from UserApp.models import Association
+from UserApp.models import User, Association
 
 class Announcement(models.Model):
     CATEGORY_CHOICES = [
@@ -16,8 +15,17 @@ class Announcement(models.Model):
         choices=CATEGORY_CHOICES,
         default="handicap"
     )
+    association = models.ForeignKey(
+        Association,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="announcements",
+        help_text="Association ayant créé cette annonce",
+    )
     title = models.CharField(max_length=100, blank=False, null=False)
     target_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=False, null=False, help_text="Montant plafond à atteindre")
+    current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, help_text="Montant actuellement collecté")
     views = models.PositiveIntegerField(default=0)
     photo = models.ImageField(upload_to="Announcements/", blank=True, null=True)
     description = models.TextField(blank=False, null=False)

@@ -58,7 +58,9 @@ def new_announcement(request):
         form = AnnouncementForm(request.POST, request.FILES)
         if form.is_valid():
             annoucement = form.save(commit=False)
-            annoucement.user = request.user
+            association = Association.objects.filter(user=request.user).first()
+            if association:
+                annoucement.association = association
             annoucement.save()
             return redirect('announcements:index')
     else:

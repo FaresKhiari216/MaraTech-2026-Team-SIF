@@ -61,18 +61,29 @@
                                         {{ request.user.first_name }} {{ request.user.last_name }}
                                     </span>
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="profileDropdown" style="min-width: 220px; border-radius: 16px;">
-                                    <div class="text-center mb-2">
-                                        <div class="rounded-circle overflow-hidden mx-auto mb-2" style="width: 48px; height: 48px;">
-                                            <img src="{{ request.user.photo.url }}" alt="Photo de profil" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                                <div class="dropdown-menu dropdown-menu-end profile-dropdown-menu" aria-labelledby="profileDropdown">
+                                    <div class="profile-dropdown-header text-start mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded-circle overflow-hidden me-2" style="width: 48px; height: 48px;">
+                                                <img src="{{ request.user.photo.url }}" alt="Photo de profil" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                                            </div>
+                                            <div>
+                                                <div class="fw-semibold">{{ request.user.first_name }} {{ request.user.last_name }}</div>
+                                                <div class="small text-muted">{{ request.user.email }}</div>
+                                            </div>
                                         </div>
-                                        <div class="fw-semibold">{{ request.user.first_name }} {{ request.user.last_name }}</div>
-                                        <div class="small text-muted">{{ request.user.email }}</div>
                                     </div>
-                                    <form method="post" action="{% url 'logout' %}">
+                                    <div class="dropdown-divider my-1"></div>
+                                    <a href="{% url 'profile' %}" class="dropdown-item profile-menu-item d-flex align-items-center gap-2">
+                                        <i class="fas fa-user-circle"></i>
+                                        <span>Profil</span>
+                                    </a>
+                                    <div class="dropdown-divider my-1"></div>
+                                    <form method="post" action="{% url 'logout' %}" class="mb-0">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-sm w-100" style="background-color:#991b1b; border-color:#991b1b; border-radius:999px; color:#ffffff;">
-                                            Se déconnecter
+                                        <button type="submit" class="dropdown-item profile-menu-item d-flex align-items-center gap-2 text-danger">
+                                            <i class="fas fa-sign-out-alt"></i>
+                                            <span>Se déconnecter</span>
                                         </button>
                                     </form>
                                 </div>
