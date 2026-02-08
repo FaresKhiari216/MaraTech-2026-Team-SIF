@@ -76,5 +76,41 @@
         }
     });
 
+
+    // Dark mode toggle
+    const themeKey = 'site-theme';
+    const $body = $('body');
+    const $darkToggle = $('#darkModeToggle');
+
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            $body.addClass('dark-mode');
+            if ($darkToggle.length) {
+                $darkToggle.prop('checked', true);
+            }
+        } else {
+            $body.removeClass('dark-mode');
+            if ($darkToggle.length) {
+                $darkToggle.prop('checked', false);
+            }
+        }
+    }
+
+    // Initial theme from localStorage
+    const storedTheme = localStorage.getItem(themeKey);
+    if (storedTheme === 'dark' || storedTheme === 'light') {
+        applyTheme(storedTheme);
+    }
+
+    // If no preference stored, keep light by default
+
+    if ($darkToggle.length) {
+        $darkToggle.on('change', function () {
+            const newTheme = $(this).is(':checked') ? 'dark' : 'light';
+            localStorage.setItem(themeKey, newTheme);
+            applyTheme(newTheme);
+        });
+    }
+
 })(jQuery);
 
