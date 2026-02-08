@@ -711,6 +711,26 @@ body.dark-mode .participants-text {
     color: #2b2b2b !important;
 }
 
+/* Objectif & catégorie des annonces: texte toujours sombre, même en dark mode */
+.badge-objectif,
+.badge-categorie {
+    color: #2b2b2b !important;
+}
+
+body.dark-mode .badge-objectif,
+body.dark-mode .badge-categorie {
+    color: #2b2b2b !important;
+}
+
+/* Statut de financement (atteint / non atteint) des annonces: texte toujours clair (lisible) */
+.status-financement {
+    color: #ffffff !important;
+}
+
+body.dark-mode .status-financement {
+    color: #ffffff !important;
+}
+
 .testimonial-carousel .owl-nav .owl-prev:hover {
     background: var(--bs-dark) !important;
     color: var(--bs-primary) !important;
